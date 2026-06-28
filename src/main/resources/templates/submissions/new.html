@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>動画提出</title>
+</head>
+<body>
+
+<h1>動画提出</h1>
+
+<form th:action="@{/lessons/{id}/submit(id=${lessonId})}" method="post">
+
+  <div>
+    <label>コメント</label><br>
+    <textarea name="comment" rows="5" cols="40"></textarea>
+  </div>
+
+  <br>
+
+  <div>
+    <label>動画URL</label><br>
+    <input type="text" name="videoUrl">
+  </div>
+
+  <br>
+
+  <button type="submit">提出する</button>
+
+</form>
+
+</body>
+</html>

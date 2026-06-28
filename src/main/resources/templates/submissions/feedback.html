@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>添削フォーム</h1>
+
+<p>提出内容</p>
+
+<p th:text="${submission.comment}"></p>
+
+<p>提出動画</p>
+
+<a th:if="${submission.videoUrl != null}"
+   th:href="${submission.videoUrl}"
+   target="_blank">
+    動画を見る
+</a>
+
+<form th:action="@{/submissions/{id}/feedback(id=${submission.id})}"
+        method="post">
+
+    <div>
+        <label>添削コメント</label><br>
+
+        <textarea
+                name="feedback"
+                rows="5"
+                cols="40">
+        </textarea>
+    </div>
+
+    <br>
+
+    <button type="submit">
+        送信
+    </button>
+
+</form>
+
+</body>
+</html>

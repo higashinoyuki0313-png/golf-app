@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>提出一覧</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>提出一覧</h1>
+
+<div th:if="${#lists.isEmpty(submissions)}">
+    <p>まだ提出はありません。</p>
+</div>
+
+<table class="table" th:if="${!#lists.isEmpty(submissions)}">
+    <tr>
+        <th>ID</th>
+        <th>レッスン名</th>
+        <th>ユーザーID</th>
+        <th>コメント</th>
+        <th>動画URL</th>
+        <th>ステータス</th>
+        <th>詳細</th>
+    </tr>
+
+    <tr th:each="submission : ${submissions}">
+        <td th:text="${submission.id}"></td>
+        <td th:text="${submission.lessonTitle}"></td>
+        <td th:text="${submission.userName}"></td>
+        <td th:text="${submission.comment}"></td>
+
+        <td>
+            <a th:href="${submission.videoUrl}"
+               th:text="${submission.videoUrl}"
+               target="_blank">
+            </a>
+        </td>
+
+        <td>
+           <span th:if="${submission.status == 1}" class="status status-submitted">
+    ● 提出済み
+</span>
+
+            <span th:if="${submission.status == 2}" class="status status-reviewing">
+    ● 添削中
+</span>
+
+            <span th:if="${submission.status == 3}" class="status status-completed">
+    ● 添削完了
+</span>
+        </td>
+
+        <td>
+            <a th:href="@{/submissions/{id}(id=${submission.id})}"
+            class="btn btn-secondary">
+                詳細を見る
+            </a>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<div style="margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap;">
+
+    <a th:if="${loginAccount != null and loginAccount.role == 2}"
+       href="/pro/home"
+       class="btn btn-primary">
+        ← プロホームへ戻る
+    </a>
+
+    <a th:if="${loginAccount != null and loginAccount.role == 1}"
+       href="/user/home"
+       class="btn btn-primary">
+        ← ホームへ戻る
+    </a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>申込一覧</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<main>
+
+  <section class="hero">
+    <p class="section-label">RESERVATIONS</p>
+    <h2>申込一覧</h2>
+    <p>申し込んだレッスンの状況を確認できます。</p>
+  </section>
+
+  <div class="card">
+
+    <div th:if="${#lists.isEmpty(reservations)}">
+      <p>まだ申込はありません。</p>
+    </div>
+
+    <table class="table" th:if="${!#lists.isEmpty(reservations)}">
+      <tr>
+        <th>ID</th>
+        <th>レッスンID</th>
+        <th>ユーザーID</th>
+        <th>ステータス</th>
+        <th>詳細</th>
+      </tr>
+
+      <tr th:each="reservation : ${reservations}">
+        <td th:text="${reservation.id}"></td>
+        <td th:text="${reservation.lessonId}"></td>
+        <td th:text="${reservation.userId}"></td>
+
+        <td>
+                    <span th:if="${reservation.status == 1}" class="status status-submitted">
+                        ● 申込済み
+                    </span>
+
+          <span th:if="${reservation.status == 2}" class="status status-completed">
+                        ● 承認済み
+                    </span>
+
+          <span th:if="${reservation.status == 3}" class="status status-reviewing">
+                        ● キャンセル
+                    </span>
+        </td>
+
+        <td>
+          <a th:href="@{/reservations/{id}(id=${reservation.id})}"
+             class="btn btn-secondary">
+            詳細
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <br>
+
+    <a href="/user/home" class="btn btn-primary">
+      ホームへ戻る
+    </a>
+
+  </div>
+
+</main>
+
+</body>
+</html>

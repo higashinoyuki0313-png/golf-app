@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.golf.app.golfapp.mapper.LessonSubmissionMapper">
+
+    <select id="findAll" resultType="com.golf.app.golfapp.model.LessonSubmission">
+        SELECT
+        ls.id,
+        ls.user_id AS userId,
+        a.name AS userName,
+        ls.lesson_id AS lessonId,
+        l.title AS lessonTitle,
+        ls.comment,
+        ls.video_url AS videoUrl,
+        ls.feedback,
+        ls.status
+        FROM lesson_submissions ls
+        JOIN lessons l
+        ON ls.lesson_id = l.id
+        JOIN accounts a
+        ON ls.user_id = a.id
+        ORDER BY ls.id DESC
+    </select>
+
+    <select id="findById" resultType="com.golf.app.golfapp.model.LessonSubmission">
+        SELECT
+        ls.id,
+        ls.user_id AS userId,
+        a.name AS userName,
+        ls.lesson_id AS lessonId,
+        l.title AS lessonTitle,
+        ls.comment,
+        ls.video_url AS videoUrl,
+        ls.feedback,
+        ls.status
+        FROM lesson_submissions ls
+        JOIN lessons l
+        ON ls.lesson_id = l.id
+        JOIN accounts a
+        ON ls.user_id = a.id
+        WHERE ls.id = #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO lesson_submissions (
+        user_id,
+        lesson_id,
+        comment,
+        video_url,
+        status
+        ) VALUES (
+        #{userId},
+        #{lessonId},
+        #{comment},
+        #{videoUrl},
+        #{status}
+        )
+    </insert>
+
+    <update id="updateFeedback">
+        UPDATE lesson_submissions
+        SET
+        feedback = #{feedback},
+        status = #{status}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

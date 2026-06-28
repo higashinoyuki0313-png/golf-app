@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>レッスン詳細</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<main>
+
+    <section class="hero">
+        <p class="section-label">LESSON DETAIL</p>
+        <h2 th:text="${lesson.title}">レッスンタイトル</h2>
+        <p th:text="${lesson.content}">レッスン内容</p>
+    </section>
+
+    <div class="card">
+
+        <div th:if="${lesson.image != null and lesson.image != ''}">
+            <img th:src="${lesson.image}"
+                 style="max-width:100%; border-radius:14px; margin-bottom:24px;">
+        </div>
+
+        <p>
+            <strong>カテゴリ：</strong>
+            <span th:text="${lesson.category}">カテゴリ</span>
+        </p>
+
+        <p>
+            <strong>申込者数：</strong>
+            <span th:text="${reservationCount}">0</span>
+        </p>
+
+        <div th:if="${lesson.cause != null and lesson.cause != ''}">
+            <h3>原因</h3>
+            <p th:text="${lesson.cause}"></p>
+        </div>
+
+        <div th:if="${lesson.improvement != null and lesson.improvement != ''}">
+            <h3>改善ポイント</h3>
+            <p th:text="${lesson.improvement}"></p>
+        </div>
+
+        <div th:if="${lesson.practice != null and lesson.practice != ''}">
+            <h3>おすすめ練習方法</h3>
+            <p th:text="${lesson.practice}"></p>
+        </div>
+
+        <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+
+            <form th:if="${loginAccount != null and loginAccount.role == 1}"
+                  th:action="@{/lessons/{id}/apply(id=${lesson.id})}"
+                  method="post">
+                <button type="submit" class="btn btn-primary">
+                    レッスン申込
+                </button>
+            </form>
+
+            <a th:if="${loginAccount != null and loginAccount.role == 2}"
+               th:href="@{/lessons/{id}/edit(id=${lesson.id})}"
+               class="btn btn-secondary">
+                編集する
+            </a>
+
+            <form th:if="${loginAccount != null and loginAccount.role == 2}"
+                  th:action="@{/lessons/{id}/delete(id=${lesson.id})}"
+                  method="post"
+                  onsubmit="return confirm('本当に削除しますか？');">
+                <button type="submit" class="btn btn-danger">
+                    削除
+                </button>
+            </form>
+
+            <a href="/lessons" class="btn btn-secondary">
+                ← 一覧へ戻る
+            </a>
+
+        </div>
+
+    </div>
+
+    <div th:if="${loginAccount != null and loginAccount.role == 2}"
+         class="card"
+         style="margin-top:24px;">
+
+        <h3>申込者一覧</h3>
+
+        <table class="table" th:if="${reservations != null}">
+            <tr>
+                <th>予約ID</th>
+                <th>ユーザーID</th>
+            </tr>
+
+            <tr th:each="reservation : ${reservations}">
+                <td th:text="${reservation.id}"></td>
+                <td th:text="${reservation.userId}"></td>
+            </tr>
+        </table>
+
+    </div>
+
+</main>
+
+</body>
+</html>

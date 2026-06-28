@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>申込詳細</title>
+</head>
+<body>
+
+<h1>申込詳細</h1>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <td th:text="${reservation.id}"></td>
+  </tr>
+
+  <tr>
+    <th>Lesson ID</th>
+    <td th:text="${reservation.lessonId}"></td>
+  </tr>
+
+  <tr>
+    <th>User ID</th>
+    <td th:text="${reservation.UserId}"></td>
+  </tr>
+</table>
+
+<br>
+
+<a href="/reservations">一覧へ戻る</a>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>プロフィール</title>
+</head>
+<body>
+
+<img th:if="${account.image != null}"
+     th:src="${account.image}"
+     width="200">
+
+<h1 th:text="${account.name}"></h1>
+
+<p th:text="${account.email}"></p>
+
+<p th:if="${account.role == 2"}>
+  プロ
+</p>
+
+<p th:if="${account.role ==1"}>
+  一般ユーザー
+</p>
+
+</body>
+</html>

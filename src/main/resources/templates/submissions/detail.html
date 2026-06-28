@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>提出詳細</title>
+</head>
+<body>
+
+<h1>提出詳細画面</h1>
+
+<p>提出コメント</p>
+<p th:text="${submission.comment}"></p>
+
+<p>動画URL</p>
+<a th:if="${submission.videoUrl != null}"
+   th:href="${submission.videoUrl}"
+   target="_blank">
+    提出動画を見る
+</a>
+
+<p>添削コメント</p>
+<p th:text="${submission.feedback}"></p>
+
+<p>ステータス</p>
+
+<p th:if="${submission.status == 1}">
+    提出中
+</p>
+
+<p th:if="${submission.status == 3}">
+    添削済み
+</p>
+
+<a
+        th:if="${loginAccount.role ==2}"
+        th:href="@{/submissions/{id}/feedback(id=${submission.id})}">
+    添削する
+</a>
+
+<br><br>
+
+<a href="/submissions" class="btn btn-primary">
+    提出一覧へ戻る
+</a>
+
+</body>
+</html>

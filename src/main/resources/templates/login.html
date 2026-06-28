@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>ログイン</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<main>
+
+  <div class="hero">
+    <p class="section-label">LOGIN</p>
+    <h2>ログイン</h2>
+    <p>登録済みのメールアドレスとパスワードを入力してください。</p>
+  </div>
+
+  <div class="card auth-card">
+
+    <form action="/login" method="post">
+
+      <div>
+        <label>メールアドレス</label><br>
+        <input type="email" name="email" required>
+      </div>
+
+      <div>
+        <label>パスワード</label><br>
+        <input type="password" name="password" required>
+      </div>
+
+      <br>
+
+      <button type="submit" class="btn btn-primary">
+        ログイン
+      </button>
+
+    </form>
+
+    <hr>
+
+    <p>
+      アカウントをお持ちでない方はこちら
+    </p>
+
+    <a href="/register" class="btn btn-secondary">
+      新規登録
+    </a>
+
+  </div>
+
+</main>
+
+</body>
+</html>

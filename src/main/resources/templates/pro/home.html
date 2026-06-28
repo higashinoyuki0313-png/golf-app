@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>プロホーム</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div>
+    <p class="logo-text">Golf Lesson App</p>
+    <h1>プロホーム</h1>
+    <p class="header-text">
+      投稿やレッスンを管理し、受講者の動画を添削できます。
+    </p>
+  </div>
+
+  <nav class="nav-menu">
+    <a href="/posts">投稿一覧</a>
+    <a href="/lessons">レッスン一覧</a>
+    <a href="/lessons/new">レッスン作成</a>
+    <a href="/submissions">提出一覧</a>
+    <a href="/logout" class="btn btn-danger logout-link">ログアウト</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <p class="section-label">PRO MENU</p>
+    <h2>プロ向けメニュー</h2>
+    <p>
+      投稿・レッスンの管理や、受講者の動画添削を行います。
+    </p>
+  </section>
+
+  <section class="cards">
+
+    <div class="card">
+      <a href="/posts">
+        <h3>投稿一覧</h3>
+        <p>投稿した改善記事を確認・編集・削除します。</p>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="/lessons">
+        <h3>レッスン一覧</h3>
+        <p>作成したレッスンを確認・編集・削除します。</p>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="/lessons/new">
+        <h3>レッスン作成</h3>
+        <p>新しい動画添削レッスンを登録します。</p>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="/submissions">
+        <h3>提出一覧</h3>
+        <p>受講者から提出された動画を確認し、添削を行います。</p>
+      </a>
+    </div>
+
+  </section>
+
+</main>
+
+</body>
+</html>

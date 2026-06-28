@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理者ホーム</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div>
+        <p class="logo-text">Golf Lesson App</p>
+        <h1>管理者ホーム</h1>
+        <p class="header-text">アカウント情報を管理できます。</p>
+    </div>
+
+    <nav class="nav-menu">
+        <a href="/logout" class="btn btn-danger logout-link">ログアウト</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <p class="section-label">ADMIN MENU</p>
+        <h2>アカウント一覧</h2>
+    </section>
+
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>名前</th>
+            <th>メール</th>
+            <th>権限</th>
+            <th>操作</th>
+        </tr>
+
+        <tr th:each="account : ${accounts}">
+            <td th:text="${account.id}"></td>
+            <td th:text="${account.name}"></td>
+            <td th:text="${account.email}"></td>
+            <td>
+                <span th:if="${account.role == 1}">一般ユーザー</span>
+                <span th:if="${account.role == 2}">プロ</span>
+                <span th:if="${account.role == 9}">管理者</span>
+            </td>
+            <td>
+                <form th:if="${account.role != 9}"
+                        th:action="@{/admin/accounts/{id}/delete(id=${account.id})}"
+                      method="post">
+                    <button type="submit" class="btn btn-danger">
+                        削除
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</main>
+
+</body>
+</html>

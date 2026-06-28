@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>新規投稿</title>
+</head>
+<body>
+
+<h1>新規投稿</h1>
+
+<form action="/posts"
+      method="post"
+      enctype="multipart/form-data">
+
+    <div>
+        <label>カテゴリ</label><br>
+
+        <select name="category">
+            <option value="slice">スライス改善</option>
+            <option value="hook">フック改善</option>
+            <option value="distance">飛距離アップ</option>
+            <option value="contact">ミート率アップ</option>
+            <option value="shortgame">ショートゲーム</option>
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label>タイトル</label><br>
+        <input type="text" name="title">
+    </div>
+
+    <br>
+
+    <div>
+        <label>画像</label><br>
+        <input type="file" name="imageFile">
+
+    </div>
+
+    <br>
+
+    <div>
+        <label>内容</label><br>
+        <textarea name="content" rows="5" cols="40"></textarea>
+    </div>
+
+    <br>
+
+    <div>
+        <label>原因</label><br>
+        <textarea name="cause" rows="3" cols="40"></textarea>
+    </div>
+
+    <br>
+
+    <div>
+        <label>改善ポイント</label><br>
+        <textarea name="improvement" rows="3" cols="40"></textarea>
+    </div>
+
+    <br>
+
+    <div>
+        <label>おすすめ練習方法</label><br>
+        <textarea name="practice" rows="3" cols="40"></textarea>
+    </div>
+
+    <br>
+
+    <button type="submit">投稿する</button>
+
+
+</form>
+
+</body>
+</html>
