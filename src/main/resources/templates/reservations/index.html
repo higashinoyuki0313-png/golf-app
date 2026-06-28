@@ -54,6 +54,16 @@
              class="btn btn-secondary">
             詳細
           </a>
+
+          <form th:if="${reservation.status == 1}"
+                th:action="@{/reservations/{id}/status/{status}(id=${reservation.id},status=3)}"
+                method="post"
+                style="display:inline;"
+                onsubmit="return confirm('この申込をキャンセルしますか？');">
+            <button type="submit" class="btn btn-danger">
+              キャンセル
+            </button>
+          </form>
         </td>
       </tr>
     </table>
