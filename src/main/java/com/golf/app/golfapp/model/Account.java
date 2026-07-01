@@ -1,6 +1,27 @@
 package com.golf.app.golfapp.model;
 
 public class Account {
+
+    private Long id;
+
+    private String email;
+
+    private String password;
+
+    private String name;
+
+    private Integer role;
+
+    private String image;
+
+    private String profile;
+
+    private String specialty;
+
+    private Integer bestScore;
+
+    private String sns;
+
     public Long getId() {
         return id;
     }
@@ -25,9 +46,13 @@ public class Account {
         this.password = password;
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getRole() {
         return role;
@@ -45,16 +70,35 @@ public class Account {
         this.image = image;
     }
 
-    private Long id;
+    public String getProfile() {
+        return profile;
+    }
 
-    private String email;
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
 
-    private String password;
+    public String getSpecialty() {
+        return specialty;
+    }
 
-    private String name;
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
 
-    private Integer role;
+    public Integer getBestScore() {
+        return bestScore;
+    }
 
-    private String image;
+    public void setBestScore(Integer bestScore) {
+        this.bestScore = bestScore;
+    }
 
+    public String getSns() {
+        return sns;
+    }
+
+    public void setSns(String sns) {
+        this.sns = sns;
+    }
 }

@@ -47,4 +47,16 @@
         ORDER BY id
     </select>
 
+    <update id="updateProfile">
+        UPDATE accounts
+        SET
+        name = #{name},
+        image = #{image},
+        profile = #{profile},
+        specialty = #{specialty},
+        best_score = #{bestScore},
+        sns = #{sns}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

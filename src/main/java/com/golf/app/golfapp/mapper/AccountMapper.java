@@ -17,4 +17,6 @@ public interface AccountMapper {
 
     void deleteById(Long id);
 
+    void updateProfile(Account account);
+
 }
