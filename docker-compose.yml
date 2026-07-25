@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17
+    container_name: golf-app-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: myproject
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - golf-app-db-data:/var/lib/postgresql/data
+
+volumes:
+  golf-app-db-data:
