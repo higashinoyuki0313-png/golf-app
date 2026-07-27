@@ -1,0 +1,37 @@
+# Elastic Beanstalk デプロイ用 compose
+# デプロイバンドルには docker-compose.yml という名前で入れること
+# DB_PASSWORD は EB の環境プロパティ（.env 経由）で渡す
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: golf
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-appuser}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appuser -d golf"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  spring-app:
+    image: 696592521644.dkr.ecr.ap-northeast-1.amazonaws.com/golf-lesson:latest
+    container_name: spring-app
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/golf
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-appuser}
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx384m"
+    ports:
+      - "80:8080"
+    restart: unless-stopped
+
+volumes:
+  pg-data:

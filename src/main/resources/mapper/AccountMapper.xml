@@ -54,7 +54,7 @@
         image = #{image},
         profile = #{profile},
         favorite_club = #{favoriteClub},
-        best_score = #{bestScore},
+        best_score = #{bestScore}
         WHERE id = #{id}
     </update>
 
