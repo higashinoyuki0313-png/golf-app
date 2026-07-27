@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>レッスン一覧</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main>
+
+  <section class="hero">
+    <p class="section-label">MY LESSONS</p>
+
+    <h2>自分が作成したレッスン</h2>
+
+    <p>
+      作成済みレッスンの確認・編集・削除ができます。
+    </p>
+
+    <a th:href="@{/lessons/new}" class="btn">
+      ＋ 新しいレッスンを作成
+    </a>
+  </section>
+
+  <section class="cards">
+
+    <div class="card" th:each="lesson : ${lessons}">
+
+      <img
+              th:if="${lesson.image != null}"
+              th:src="${lesson.image}"
+              alt="レッスン画像"
+              class="lesson-image"
+      >
+
+      <video
+              th:if="${lesson.video != null}"
+              controls
+              class="lesson-video"
+      >
+        <source th:src="${lesson.video}">
+      </video>
+
+      <p
+              class="section-label"
+              th:text="${lesson.category}"
+      ></p>
+
+      <h3 th:text="${lesson.title}"></h3>
+
+      <p th:text="${lesson.content}"></p>
+
+      <div class="lesson-actions">
+
+        <a
+                th:href="@{/lessons/{id}(id=${lesson.id})}"
+                class="btn"
+        >
+          詳細
+        </a>
+
+        <a
+                th:href="@{/lessons/{id}/edit(id=${lesson.id})}"
+                class="btn"
+        >
+          編集する
+        </a>
+
+        <form
+                th:action="@{/lessons/{id}/delete(id=${lesson.id})}"
+                method="post"
+                onsubmit="return confirm('このレッスンを削除しますか？');"
+        >
+          <button type="submit" class="btn delete-btn">
+            削除する
+          </button>
+        </form>
+
+      </div>
+
+    </div>
+
+    <div class="empty-message" th:if="${#lists.isEmpty(lessons)}">
+      <p>まだレッスンが作成されていません。</p>
+
+      <a th:href="@{/lessons/new}" class="btn">
+        最初のレッスンを作成する
+      </a>
+    </div>
+
+  </section>
+
+</main>
+
+</body>
+</html>

@@ -3,45 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <title>提出詳細</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-<h1>提出詳細画面</h1>
+<header th:replace="~{fragments/header :: header}"></header>
 
-<p>提出コメント</p>
-<p th:text="${submission.comment}"></p>
+<main>
 
-<p>動画URL</p>
-<a th:if="${submission.videoUrl != null}"
-   th:href="${submission.videoUrl}"
-   target="_blank">
-    提出動画を見る
-</a>
+    <div class="card submission-detail-card">
 
-<p>添削コメント</p>
-<p th:text="${submission.feedback}"></p>
+        <h1 th:text="${submission.lessonTitle}">
+            レッスン名
+        </h1>
 
-<p>ステータス</p>
+        <div class="submission-detail-section">
+            <h3>提出コメント</h3>
 
-<p th:if="${submission.status == 1}">
-    提出中
-</p>
+            <p class="submission-detail-comment"
+               th:text="${submission.comment}">
+                提出コメント
+            </p>
+        </div>
 
-<p th:if="${submission.status == 3}">
-    添削済み
-</p>
+        <div class="submission-detail-section"
+             th:if="${submission.videoUrl != null and submission.videoUrl != ''}">
 
-<a
-        th:if="${loginAccount.role ==2}"
-        th:href="@{/submissions/{id}/feedback(id=${submission.id})}">
-    添削する
-</a>
+            <h3>提出動画</h3>
 
-<br><br>
+            <div class="submission-detail-video">
+                <video controls>
+                    <source th:src="${submission.videoUrl}">
+                    お使いのブラウザは動画再生に対応していません。
+                </video>
+            </div>
 
-<a href="/submissions" class="btn btn-primary">
-    提出一覧へ戻る
-</a>
+        </div>
+
+        <div class="submission-detail-section"
+             th:if="${submission.feedbackVideoUrl != null and submission.feedbackVideoUrl != ''}">
+
+            <h3>添削動画</h3>
+
+            <div class="submission-detail-video">
+                <video controls>
+                    <source th:src="${submission.feedbackVideoUrl}">
+                    お使いのブラウザは動画再生に対応していません。
+                </video>
+            </div>
+
+        </div>
+
+        <div class="submission-detail-section"
+             th:if="${submission.feedback != null and submission.feedback != ''}">
+
+            <h3>添削コメント</h3>
+
+            <p class="submission-detail-comment"
+               th:text="${submission.feedback}">
+                添削コメント
+            </p>
+        </div>
+
+        <div class="submission-detail-section">
+            <h3>ステータス</h3>
+
+            <span th:if="${submission.status == 1}"
+                  class="status-badge status-waiting">
+            提出中
+        </span>
+
+            <span th:if="${submission.status == 3}"
+                  class="status-badge status-completed">
+            添削済み
+        </span>
+        </div>
+
+        <div class="submission-detail-actions">
+
+            <a th:if="${loginAccount != null and loginAccount.role == 2}"
+               th:href="@{/submissions/{id}/feedback(id=${submission.id})}"
+               class="btn btn-primary">
+                編集する
+            </a>
+
+            <a th:if="${loginAccount != null and loginAccount.role == 1}"
+               th:href="@{/my-lessons}"
+               class="btn btn-secondary">
+                マイレッスンへ戻る
+            </a>
+
+            <a th:if="${loginAccount != null and loginAccount.role == 2}"
+               th:href="@{/submissions}"
+               class="btn btn-secondary">
+                提出一覧へ戻る
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
 
 </body>
 </html>

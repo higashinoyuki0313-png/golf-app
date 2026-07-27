@@ -5,16 +5,12 @@
 
 -- アカウント（role: 1=一般ユーザー / 2=プロ / 9=管理者）
 CREATE TABLE accounts (
-                          id         BIGSERIAL    PRIMARY KEY,
-                          name       VARCHAR(100) NOT NULL,
-                          email      VARCHAR(255) NOT NULL UNIQUE,
-                          password   VARCHAR(255) NOT NULL,
-                          role       INTEGER      NOT NULL DEFAULT 1,
-                          image      VARCHAR(500),
-                          profile    TEXT,
-                          specialty  VARCHAR(255),
-                          best_score INTEGER,
-                          sns        VARCHAR(255)
+    id       BIGSERIAL    PRIMARY KEY,
+    name     VARCHAR(100) NOT NULL,
+    email    VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role     INTEGER      NOT NULL DEFAULT 1,
+    image    VARCHAR(500)
 );
 
 -- レッスン

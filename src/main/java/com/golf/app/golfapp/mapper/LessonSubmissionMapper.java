@@ -10,9 +10,17 @@ public interface LessonSubmissionMapper {
 
     List<LessonSubmission> findAll();
 
+    List<LessonSubmission> findByProId(Long proId);
+
+    List<LessonSubmission> findByUserId(Long userId);
+
+    List<LessonSubmission> findByReservationId(Long reservationId);
+
     LessonSubmission findById(Long id);
 
     void insert(LessonSubmission lessonSubmission);
 
     void updateFeedback(LessonSubmission lessonSubmission);
+
+    void deleteById(Long id);
 }

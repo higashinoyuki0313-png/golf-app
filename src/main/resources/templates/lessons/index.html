@@ -3,99 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>レッスン一覧</title>
-
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #f4f8f4;
-            margin: 0;
-            padding: 40px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .page-title {
-            font-size: 40px;
-            text-align: center;
-            color: #087a2d;
-            margin-bottom: 10px;
-        }
-
-        .page-description {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 18px;
-        }
-
-        .new-post-btn {
-            display: inline-block;
-            background-color: #087a2d;
-            color: white;
-            padding: 12px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-        }
-
-        .post-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .post-card {
-            background-color: white;
-            border: 1px solid #d6e6d6;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-        }
-
-        .post-card:hover {
-            border-color: #087a2d;
-        }
-
-        .post-tag {
-            display: inline-block;
-            background-color: #e8f4ff;
-            color: #087a2d;
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
-
-        .post-title {
-            color: #087a2d;
-            font-size: 24px;
-            margin-bottom: 12px;
-        }
-
-        .post-content {
-            color: #555;
-            line-height: 1.7;
-        }
-
-        .detail-link {
-            display: inline-block;
-            margin-top: 16px;
-            color: #087a2d;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        @media (max-width: 700px) {
-            .post-list {
-                grid-template-columns: 1fr;
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+
+<header th:replace="~{fragments/header :: header}"></header>
 
 <div class="container">
 
@@ -109,6 +21,10 @@
 
     <div class="post-list">
 
+        <div th:if="${#lists.isEmpty(lessons)}">
+            <p>このカテゴリには、まだレッスンがありません。</p>
+        </div>
+
         <div class="post-card" th:each="lesson : ${lessons}">
 
             <div class="post-tag">
@@ -119,6 +35,11 @@
                 th:text="${lesson.title}">
             </h2>
 
+            <p class="lesson-pro">
+                担当プロ
+                <span th:text="${lesson.proName}">プロ名</span>
+            </p>
+
             <p class="post-content"
                th:text="${lesson.content}">
             </p>
@@ -128,37 +49,29 @@
                 詳細を見る →
             </a>
 
-            <a th:if="${loginAccount != null and loginAccount.role == 2}"
-               class="detail-link"
-               th:href="@{/lessons/{id}/edit(id=${lesson.id})}">
-                編集する →
-            </a>
-
         </div>
 
     </div>
 
-    <div style="margin-top:30px; display:flex; gap:12px; flex-wrap:wrap;">
+    <div class="page-actions">
 
         <a th:if="${loginAccount != null and loginAccount.role == 2}"
-           href="/pro/home"
+           th:href="@{/pro/home}"
            class="new-post-btn">
             ← プロホームへ戻る
         </a>
 
         <a th:if="${loginAccount != null and loginAccount.role == 1}"
-           href="/user/home"
+           th:href="@{/user/home}"
            class="new-post-btn">
             ← ホームへ戻る
         </a>
 
         <a th:if="${loginAccount == null}"
-           href="/login"
+           th:href="@{/login}"
            class="new-post-btn">
             ← ログインへ戻る
         </a>
-
-    </div>
 
     </div>
 

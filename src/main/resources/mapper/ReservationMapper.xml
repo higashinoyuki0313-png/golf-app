@@ -21,24 +21,63 @@
             resultType="com.golf.app.golfapp.model.Reservation">
 
         SELECT
-        id,
-        lesson_id,
-        user_id,
-        status
+        reservations.*,
+        accounts.name AS user_name
         FROM reservations
-        WHERE id = #{id}
+        JOIN accounts
+        ON reservations.user_id = accounts.id
+        WHERE reservations.id = #{id}
+
     </select>
 
     <select id="findByLessonId"
             resultType="com.golf.app.golfapp.model.Reservation">
 
         SELECT
-        id,
-        lesson_id,
-        user_id,
-        status
+        reservations.*,
+        accounts.name AS user_name
         FROM reservations
-        WHERE lesson_id = #{lessonId}
+        JOIN accounts
+        ON reservations.user_id = accounts.id
+        WHERE reservations.lesson_id = #{lessonId}
+
+    </select>
+
+    <select id="findMyLessons"
+            resultType="com.golf.app.golfapp.model.Reservation">
+
+        SELECT
+        reservations.id,
+        reservations.lesson_id AS lessonId,
+        reservations.user_id AS userId,
+        reservations.status,
+        lessons.title AS lessonTitle,
+        accounts.name AS proName,
+
+        MAX(lesson_submissions.status) AS submissionStatus,
+
+        COUNT(lesson_submissions.id) AS submissionCount,
+        COUNT(
+        CASE
+        WHEN lesson_submissions.status = 3 THEN 1
+        END
+        ) AS completedSubmissionCount
+        FROM reservations
+        JOIN lessons
+        ON reservations.lesson_id = lessons.id
+        JOIN accounts
+        ON lessons.pro_id = accounts.id
+        LEFT JOIN lesson_submissions
+        ON reservations.id = lesson_submissions.reservation_id
+        WHERE reservations.user_id = #{userId}
+        GROUP BY
+        reservations.id,
+        reservations.lesson_id,
+        reservations.user_id,
+        reservations.status,
+        lessons.title,
+        accounts.name
+        ORDER BY reservations.id DESC
 
     </select>
 
@@ -56,8 +95,10 @@
 
     </select>
 
-
-    <insert id="save">
+    <insert
+            id="save"
+            useGeneratedKeys="true"
+            keyProperty="id">
 
         INSERT INTO reservations(
         lesson_id,
@@ -85,13 +126,14 @@
 
         SELECT
         id,
-        lesson_id,
-        user_id,
+        lesson_id AS lessonId,
+        user_id AS userId,
         status
         FROM reservations
         WHERE lesson_id = #{lessonId}
         AND user_id = #{userId}
         LIMIT 1
+
     </select>
 
 </mapper>

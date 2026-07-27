@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<header class="site-header" th:fragment="header">
+
+  <div class="header-inner">
+
+    <a href="/" class="logo">
+      ⛳
+    </a>
+
+    <nav class="header-nav">
+
+      <a th:if="${loginAccount != null and loginAccount.role == 1}"
+         th:href="@{/user/home}">
+        ユーザーホーム
+      </a>
+
+      <a th:if="${loginAccount != null and loginAccount.role == 1}"
+         th:href="@{/my-lessons}">
+        マイレッスン
+      </a>
+
+      <a th:if="${loginAccount != null and loginAccount.role == 2}"
+         th:href="@{/pro/home}">
+        ホーム
+      </a>
+
+      <a th:if="${loginAccount != null and loginAccount.role == 2}"
+         th:href="@{/lessons}">
+        レッスン一覧
+      </a>
+
+      <a th:if="${loginAccount != null and loginAccount.role == 2}"
+         th:href="@{/submissions}">
+        提出一覧
+      </a>
+
+      <a th:if="${loginAccount != null}"
+         th:href="@{/profile}">
+        プロフィール
+      </a>
+
+      <a th:if="${loginAccount != null}"
+         th:href="@{/logout}">
+        ログアウト
+      </a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+</html>

@@ -5,11 +5,16 @@ import com.golf.app.golfapp.mapper.ReservationMapper;
 import com.golf.app.golfapp.model.Account;
 import com.golf.app.golfapp.model.Lesson;
 import com.golf.app.golfapp.model.Reservation;
+import com.golf.app.golfapp.service.CloudinaryService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -17,13 +22,28 @@ public class LessonController {
 
     private final LessonMapper lessonMapper;
     private final ReservationMapper reservationMapper;
+    private final CloudinaryService cloudinaryService;
+    private Account getLoginAccount(HttpSession session) {
+        return (Account) session.getAttribute("loginAccount");
+    }
+
+    private boolean isPro(Account account) {
+        return account.getRole() == 2;
+    }
+
+    private boolean canEditLesson(Lesson lesson, Account account) {
+        return lesson != null
+                && lesson.getProId().equals(account.getId());
+    }
 
     public LessonController(
             LessonMapper lessonMapper,
-            ReservationMapper reservationMapper
+            ReservationMapper reservationMapper,
+            CloudinaryService cloudinaryService
     ) {
         this.lessonMapper = lessonMapper;
         this.reservationMapper = reservationMapper;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @GetMapping("/lessons")
@@ -31,10 +51,14 @@ public class LessonController {
             Model model,
             HttpSession session
     ) {
-        List<Lesson> lessons = lessonMapper.findAll();
 
-        Account loginAccount =
-                (Account) session.getAttribute("loginAccount");
+        Account loginAccount = getLoginAccount(session);
+
+        if (loginAccount == null) {
+            return "redirect:/login";
+        }
+
+        List<Lesson> lessons = lessonMapper.findAll();
 
         model.addAttribute("lessons", lessons);
         model.addAttribute("loginAccount",loginAccount);
@@ -54,17 +78,31 @@ public class LessonController {
             return "redirect:/lessons";
         }
 
-        Account loginAccount =
-                (Account) session.getAttribute("loginAccount");
+        Account loginAccount = getLoginAccount(session);
+
+        if (loginAccount == null) {
+            return "redirect:/login";
+        }
+
+        Reservation myReservation = null;
+
+        if (loginAccount.getRole() == 1) {
+            myReservation =
+                    reservationMapper.findByLessonIdAndUserId(
+                            id,
+                            loginAccount.getId()
+                    );
+        }
 
         model.addAttribute("lesson", lesson);
         model.addAttribute("loginAccount", loginAccount);
+        model.addAttribute("myReservation", myReservation);
         model.addAttribute(
                 "reservationCount",
                 reservationMapper.findByLessonId(id).size()
         );
 
-        if (loginAccount != null && loginAccount.getRole() == 2) {
+        if (loginAccount.getRole() == 2) {
             model.addAttribute(
                     "reservations",
                     reservationMapper.findByLessonId(id)
@@ -75,56 +113,121 @@ public class LessonController {
     }
 
     @GetMapping("/lessons/new")
-    public String newLesson(HttpSession session) {
-        Account loginAccount =
-                (Account) session.getAttribute("loginAccount");
+    public String newLesson(
+            HttpSession session,
+            Model model
+    ) {
+
+        Account loginAccount = getLoginAccount(session);
 
         if (loginAccount == null) {
             return "redirect:/login";
         }
 
-        if (loginAccount.getRole() != 2) {
+        if (!isPro(loginAccount)) {
             return "redirect:/user/home";
         }
+
+        model.addAttribute("lesson", new Lesson());
 
         return "lessons/new";
     }
 
     @PostMapping("/lessons")
     public String createLesson(
-            @RequestParam("title") String title,
-            @RequestParam("content") String content,
-            @RequestParam("image") String image,
-            @RequestParam("cause") String cause,
-            @RequestParam("improvement") String improvement,
-            @RequestParam("practice") String practice,
-            @RequestParam("category") String category,
-            HttpSession session
-    ) {
-        Account loginAccount =
-                (Account) session.getAttribute("loginAccount");
+            @Valid @ModelAttribute("lesson") Lesson lesson,
+            BindingResult bindingResult,
+            @RequestParam(value = "media", required = false) MultipartFile media,
+            HttpSession session,
+            Model model
+    ){
+
+        Account loginAccount = getLoginAccount(session);
 
         if (loginAccount == null) {
             return "redirect:/login";
         }
 
-        if (loginAccount.getRole() != 2) {
+        if (!isPro(loginAccount)) {
             return "redirect:/user/home";
         }
 
-        Lesson lesson = new Lesson();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("loginAccount", loginAccount);
+            return "lessons/new";
+        }
 
-        lesson.setTitle(title);
-        lesson.setContent(content);
-        lesson.setImage(image);
-        lesson.setCause(cause);
-        lesson.setImprovement(improvement);
-        lesson.setPractice(practice);
-        lesson.setCategory(category);
+        String imageUrl = null;
+        String videoUrl = null;
+
+        if (media != null && !media.isEmpty()) {
+            String contentType = media.getContentType();
+
+            if (contentType == null
+                    || (!contentType.startsWith("image/")
+                    && !contentType.startsWith("video/"))) {
+
+
+                bindingResult.reject(
+                        "media.invalid",
+                        "画像または動画を選択してください。"
+                );
+
+                model.addAttribute("loginAccount", loginAccount);
+                return "lessons/new";
+            }
+
+            try {
+                String url = cloudinaryService.uploadFile(media);
+
+                if (contentType.startsWith("image/")) {
+                    imageUrl = url;
+                } else {
+                    videoUrl = url;
+                }
+
+            } catch (IOException e) {
+                bindingResult.reject(
+                        "media.upload",
+                        "ファイルのアップロードに失敗しました。"
+                );
+
+                model.addAttribute("loginAccount", loginAccount);
+                return "lessons/new";
+            }
+        }
+
+        lesson.setProId(loginAccount.getId());
+        lesson.setImage(imageUrl);
+        lesson.setVideo(videoUrl);
 
         lessonMapper.insert(lesson);
 
-        return "redirect:/pro/home";
+        return "redirect:/pro/lessons";
+    }
+
+    @GetMapping("/pro/lessons")
+    public String proLessons(
+            Model model,
+            HttpSession session
+    ) {
+        Account loginAccount = getLoginAccount(session);
+
+        if (loginAccount == null) {
+            return "redirect:/login";
+        }
+
+        if (!isPro(loginAccount)) {
+            return "redirect:/user/home";
+        }
+
+        List<Lesson> lessons =
+                lessonMapper.findByProId(loginAccount.getId());
+
+        model.addAttribute("lessons", lessons);
+        model.addAttribute("loginAccount", loginAccount);
+
+        return "pro/lessons";
     }
 
     @GetMapping("/lessons/{id}/edit")
@@ -133,21 +236,25 @@ public class LessonController {
             Model model,
             HttpSession session
     ) {
-        Account loginAccount =
-                (Account) session.getAttribute("loginAccount");
+
+        Account loginAccount = getLoginAccount(session);
 
         if (loginAccount == null) {
             return "redirect:/login";
         }
 
-        if (loginAccount.getRole() != 2) {
+        if (!isPro(loginAccount)) {
             return "redirect:/user/home";
         }
 
         Lesson lesson = lessonMapper.findById(id);
 
         if (lesson == null) {
-            return "redirect:/lessons";
+            return "redirect:/pro/lessons";
+        }
+
+        if (!lesson.getProId().equals(loginAccount.getId())) {
+            return "redirect:/pro/lessons";
         }
 
         model.addAttribute("lesson", lesson);
@@ -158,40 +265,87 @@ public class LessonController {
     @PostMapping("/lessons/{id}/edit")
     public String updateLesson(
             @PathVariable Long id,
-            @RequestParam String title,
-            @RequestParam String content,
-            @RequestParam String image,
-            @RequestParam String cause,
-            @RequestParam String improvement,
-            @RequestParam String practice,
-            @RequestParam String category,
-            HttpSession session
+            @Valid @ModelAttribute("lesson") Lesson lesson,
+            BindingResult bindingResult,
+            @RequestParam(value = "media", required = false) MultipartFile media,
+            HttpSession session,
+            Model model
     ) {
-        Account loginAccount =
-                (Account) session.getAttribute("loginAccount");
+
+        Account loginAccount = getLoginAccount(session);
 
         if (loginAccount == null) {
             return "redirect:/login";
         }
 
-        if (loginAccount.getRole() != 2) {
+        if (!isPro(loginAccount)) {
             return "redirect:/user/home";
         }
 
-        Lesson lesson = new Lesson();
+        Lesson existingLesson = lessonMapper.findById(id);
+
+        if (!canEditLesson(existingLesson, loginAccount)) {
+            return "redirect:/pro/lessons";
+        }
 
         lesson.setId(id);
-        lesson.setTitle(title);
-        lesson.setContent(content);
-        lesson.setImage(image);
-        lesson.setCause(cause);
-        lesson.setImprovement(improvement);
-        lesson.setPractice(practice);
-        lesson.setCategory(category);
+        lesson.setProId(loginAccount.getId());
+        lesson.setImage(existingLesson.getImage());
+        lesson.setVideo(existingLesson.getVideo());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("loginAccount", loginAccount);
+            model.addAttribute("lesson", lesson);
+            return "lessons/edit";
+        }
+
+        String imageUrl = existingLesson.getImage();
+        String videoUrl = existingLesson.getVideo();
+
+        if (media != null && !media.isEmpty()) {
+            String contentType = media.getContentType();
+
+            if (contentType == null
+                    || (!contentType.startsWith("image/")
+                    && !contentType.startsWith("video/"))) {
+
+                bindingResult.reject(
+                        "media.invalid",
+                        "画像または動画を選択してください。"
+                );
+
+                model.addAttribute("loginAccount", loginAccount);
+                return "lessons/edit";
+            }
+
+            try {
+                String url = cloudinaryService.uploadFile(media);
+
+                if (contentType.startsWith("image/")) {
+                    imageUrl = url;
+                    videoUrl = null;
+                } else {
+                    videoUrl = url;
+                    imageUrl = null;
+                }
+
+            } catch (IOException e) {
+                bindingResult.reject(
+                        "media.upload",
+                        "ファイルのアップロードに失敗しました。"
+                );
+
+                model.addAttribute("loginAccount", loginAccount);
+                return "lessons/edit";
+            }
+        }
+
+        lesson.setImage(imageUrl);
+        lesson.setVideo(videoUrl);
 
         lessonMapper.update(lesson);
 
-        return "redirect:/pro/home";
+        return "redirect:/pro/lessons";
     }
 
     @PostMapping("/lessons/{id}/delete")
@@ -199,20 +353,26 @@ public class LessonController {
             @PathVariable Long id,
             HttpSession session
     ) {
-        Account loginAccount =
-                (Account) session.getAttribute("loginAccount");
+
+        Account loginAccount = getLoginAccount(session);
 
         if (loginAccount == null) {
             return "redirect:/login";
         }
 
-        if (loginAccount.getRole() != 2) {
+        if (!isPro(loginAccount)) {
             return "redirect:/user/home";
+        }
+
+        Lesson existingLesson = lessonMapper.findById(id);
+
+        if (!canEditLesson(existingLesson, loginAccount)) {
+            return "redirect:/pro/lessons";
         }
 
         lessonMapper.deleteById(id);
 
-        return "redirect:/pro/home";
+        return "redirect:/pro/lessons";
     }
 
     @GetMapping("/lessons/category/{category}")
@@ -221,16 +381,40 @@ public class LessonController {
             Model model,
             HttpSession session
     ) {
+
+        Account loginAccount = getLoginAccount(session);
+
+        if (loginAccount == null) {
+            return "redirect:/login";
+        }
+
+        if (loginAccount.getRole() != 1) {
+            return "redirect:/pro/lessons";
+        }
+
         List<Lesson> lessons =
                 lessonMapper.findByCategory(category);
 
-        Account loginAccount =
-                (Account) session.getAttribute("loginAccount");
-
         model.addAttribute("lessons", lessons);
         model.addAttribute("loginAccount", loginAccount);
+        model.addAttribute("category", category);
 
         return "lessons/index";
     }
 
+    @GetMapping("/lessons/complete")
+    public String complete(
+            HttpSession session,
+            Model model
+    ) {
+        Account loginAccount = getLoginAccount(session);
+
+        if (loginAccount == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("loginAccount", loginAccount);
+
+        return "lessons/complete";
+    }
 }

@@ -41,11 +41,11 @@ public class ReservationController {
 
         reservationMapper.save(reservation);
 
-        return "redirect:/my-lessons";
+        return "redirect:/reservations";
     }
 
-    @GetMapping("/my-lessons")
-    public String myLessons(
+    @GetMapping("/reservations")
+    public String index(
             Model model,
             HttpSession session
     ) {
@@ -56,21 +56,17 @@ public class ReservationController {
             return "redirect:/login";
         }
 
-        if (loginAccount.getRole() != 1) {
-            return "redirect:/pro/home";
-        }
-
         model.addAttribute(
                 "reservations",
-                reservationMapper.findMyLessons(loginAccount.getId())
+                reservationMapper.findByUserId(loginAccount.getId())
         );
 
         model.addAttribute("loginAccount", loginAccount);
 
-        return "reservations/my-lessons";
+        return "reservations/index";
     }
 
-    @GetMapping("/my-lessons/{id}")
+    @GetMapping("/reservations/{id}")
     public String show(
             @PathVariable Long id,
             Model model,
@@ -83,10 +79,6 @@ public class ReservationController {
             return "redirect:/login";
         }
 
-        if (loginAccount.getRole() != 1) {
-            return "redirect:/pro/home";
-        }
-
         Reservation reservation = reservationMapper.findById(id);
 
         model.addAttribute("reservation", reservation);
@@ -95,7 +87,7 @@ public class ReservationController {
         return "reservations/show";
     }
 
-    @PostMapping("/my-lessons/{id}/status/{status}")
+    @PostMapping("/reservations/{id}/status/{status}")
     public String updateReservationStatus(
             @PathVariable Long id,
             @PathVariable Integer status,
@@ -108,12 +100,8 @@ public class ReservationController {
             return "redirect:/login";
         }
 
-        if (loginAccount.getRole() != 1) {
-            return "redirect:/pro/home";
-        }
-
         reservationMapper.updateStatus(id, status);
 
-        return "redirect:/my-lessons";
+        return "redirect:/reservations";
     }
 }

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>プロフィール</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main>
+
+  <section class="page-heading">
+    <p class="page-label">MY ACCOUNT</p>
+    <h1>プロフィール</h1>
+    <p>登録情報を確認できます。</p>
+  </section>
+
+  <div class="card auth-card profile-card">
+
+    <div class="profile-image-area">
+
+      <img th:if="${account.image != null and account.image != ''}"
+           th:src="${account.image}"
+           class="profile-image"
+           alt="プロフィール画像">
+
+      <p th:if="${account.image == null or account.image == ''}"
+         class="profile-empty-image">
+        プロフィール画像未設定
+      </p>
+
+    </div>
+
+    <div class="profile-item">
+      <p class="profile-label">名前</p>
+      <p class="profile-value"
+         th:text="${account.name}">
+        名前
+      </p>
+    </div>
+
+    <div class="profile-item">
+      <p class="profile-label">プロフィール</p>
+
+      <p class="profile-value"
+         th:if="${account.profile != null and account.profile != ''}"
+         th:text="${account.profile}">
+        プロフィール
+      </p>
+
+      <p class="profile-value profile-empty"
+         th:if="${account.profile == null or account.profile == ''}">
+        未設定
+      </p>
+    </div>
+
+    <div class="profile-item">
+      <p class="profile-label">ベストスコア</p>
+
+      <p class="profile-value"
+         th:if="${account.bestScore != null}"
+         th:text="${account.bestScore}">
+        85
+      </p>
+
+      <p class="profile-value profile-empty"
+         th:if="${account.bestScore == null}">
+        未設定
+      </p>
+    </div>
+
+    <div class="profile-item">
+      <p class="profile-label">得意クラブ</p>
+
+      <p class="profile-value"
+         th:if="${account.favoriteClub != null and account.favoriteClub != ''}"
+         th:text="${account.favoriteClub}">
+        ドライバー
+      </p>
+
+      <p class="profile-value profile-empty"
+         th:if="${account.favoriteClub == null or account.favoriteClub == ''}">
+        未設定
+      </p>
+    </div>
+
+    <div class="profile-actions">
+
+      <a th:href="@{/profile/edit}"
+         class="btn btn-primary">
+        編集する
+      </a>
+
+      <a th:href="@{/user/home}"
+         class="btn btn-secondary">
+        ホームへ戻る
+      </a>
+
+    </div>
+
+  </div>
+
+</main>
+
+</body>
+</html>

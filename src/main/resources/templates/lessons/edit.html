@@ -7,83 +7,163 @@
 </head>
 <body>
 
-<main>
+<header th:replace="~{fragments/header :: header}"></header>
 
-    <section class="hero">
-        <p class="section-label">EDIT LESSON</p>
-        <h2>レッスン編集</h2>
-        <p>
-            登録済みのレッスン内容を編集します。
-        </p>
+<main class="lesson-form-page">
+
+    <section class="lesson-form-heading">
+        <p class="page-label">EDIT LESSON</p>
+        <h1>レッスン編集</h1>
+        <p>登録済みのレッスン内容を編集します。</p>
     </section>
 
-    <div class="card auth-card">
+    <div class="lesson-form-card">
 
         <form th:action="@{/lessons/{id}/edit(id=${lesson.id})}"
-              method="post">
+              th:object="${lesson}"
+              method="post"
+              enctype="multipart/form-data"
+              class="lesson-form">
 
-            <div>
-                <label>カテゴリ</label><br>
-                <select name="category" required>
-                    <option value="slice" th:selected="${lesson.category == 'slice'}">スライス改善</option>
-                    <option value="hook" th:selected="${lesson.category == 'hook'}">フック改善</option>
-                    <option value="distance" th:selected="${lesson.category == 'distance'}">飛距離アップ</option>
-                    <option value="contact" th:selected="${lesson.category == 'contact'}">ミート率アップ</option>
-                    <option value="shortgame" th:selected="${lesson.category == 'shortgame'}">ショートゲーム</option>
+            <div class="form-group">
+                <label for="category">カテゴリ</label>
+
+                <select id="category"
+                        th:field="*{category}">
+
+                    <option value="">選択してください</option>
+                    <option value="slice">スライス改善</option>
+                    <option value="hook">フック改善</option>
+                    <option value="distance">飛距離アップ</option>
+                    <option value="contact">ミート率アップ</option>
+                    <option value="shortgame">ショートゲーム</option>
+
                 </select>
+
+                <p class="form-error"
+                   th:if="${#fields.hasErrors('category')}"
+                   th:errors="*{category}">
+                    カテゴリエラー
+                </p>
             </div>
 
-            <div>
-                <label>レッスンタイトル</label><br>
-                <input type="text"
-                       name="title"
-                       th:value="${lesson.title}"
-                       required>
+            <div class="form-group">
+                <label for="title">レッスンタイトル</label>
+
+                <input id="title"
+                       type="text"
+                       th:field="*{title}">
+
+                <p class="form-error"
+                   th:if="${#fields.hasErrors('title')}"
+                   th:errors="*{title}">
+                    タイトルエラー
+                </p>
             </div>
 
-            <div>
-                <label>画像URL</label><br>
-                <input type="text"
-                       name="image"
-                       th:value="${lesson.image}">
+            <div class="form-group">
+                <label for="media">レッスン画像・動画</label>
+
+                <input id="media"
+                       type="file"
+                       name="media"
+                       accept="image/*,video/*">
+
+                <p class="form-help">
+                    新しい画像または動画を選択した場合のみ更新されます。
+                </p>
+
+                <p class="form-error"
+                   th:if="${#fields.hasGlobalErrors()}"
+                   th:each="error : ${#fields.globalErrors()}"
+                   th:text="${error}">
+                    ファイルエラー
+                </p>
+
+                <div th:if="${lesson.image != null and lesson.image != ''}">
+                    <p class="form-help">現在の画像</p>
+
+                    <img th:src="${lesson.image}"
+                         class="lesson-edit-media"
+                         alt="現在のレッスン画像">
+                </div>
+
+                <div th:if="${lesson.video != null and lesson.video != ''}">
+                    <p class="form-help">現在の動画</p>
+
+                    <video controls
+                           class="lesson-edit-media">
+                        <source th:src="${lesson.video}">
+                        動画を再生できません。
+                    </video>
+                </div>
             </div>
 
-            <div>
-                <label>レッスン内容</label><br>
-                <textarea name="content"
-                          rows="5"
-                          required
-                          th:text="${lesson.content}"></textarea>
+            <div class="form-group">
+                <label for="content">レッスン内容</label>
+
+                <textarea id="content"
+                          th:field="*{content}"
+                          rows="5"></textarea>
+
+                <p class="form-error"
+                   th:if="${#fields.hasErrors('content')}"
+                   th:errors="*{content}">
+                    レッスン内容エラー
+                </p>
             </div>
 
-            <div>
-                <label>原因</label><br>
-                <textarea name="cause"
-                          rows="4"
-                          th:text="${lesson.cause}"></textarea>
+            <div class="form-group">
+                <label for="cause">原因</label>
+
+                <textarea id="cause"
+                          th:field="*{cause}"
+                          rows="4"></textarea>
+
+                <p class="form-error"
+                   th:if="${#fields.hasErrors('cause')}"
+                   th:errors="*{cause}">
+                    原因エラー
+                </p>
             </div>
 
-            <div>
-                <label>改善ポイント</label><br>
-                <textarea name="improvement"
-                          rows="4"
-                          th:text="${lesson.improvement}"></textarea>
+            <div class="form-group">
+                <label for="improvement">改善ポイント</label>
+
+                <textarea id="improvement"
+                          th:field="*{improvement}"
+                          rows="4"></textarea>
+
+                <p class="form-error"
+                   th:if="${#fields.hasErrors('improvement')}"
+                   th:errors="*{improvement}">
+                    改善ポイントエラー
+                </p>
             </div>
 
-            <div>
-                <label>おすすめ練習方法</label><br>
-                <textarea name="practice"
-                          rows="4"
-                          th:text="${lesson.practice}"></textarea>
+            <div class="form-group">
+                <label for="practice">おすすめ練習方法</label>
+
+                <textarea id="practice"
+                          th:field="*{practice}"
+                          rows="4"></textarea>
+
+                <p class="form-error"
+                   th:if="${#fields.hasErrors('practice')}"
+                   th:errors="*{practice}">
+                    練習方法エラー
+                </p>
             </div>
 
-            <div style="display:flex; gap:12px; margin-top:24px;">
+            <div class="lesson-form-actions">
 
-                <button type="submit" class="btn btn-primary">
+                <button type="submit"
+                        class="btn btn-primary">
                     レッスンを更新
                 </button>
 
-                <a href="/lessons" class="btn btn-secondary">
+                <a th:href="@{/lessons}"
+                   class="btn btn-secondary">
                     ← レッスン一覧へ戻る
                 </a>
 

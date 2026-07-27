@@ -47,13 +47,24 @@
         ORDER BY id
     </select>
 
-    <update id="updateProfile">
+    <update id="updateUserProfile">
         UPDATE accounts
         SET
         name = #{name},
         image = #{image},
         profile = #{profile},
-        specialty = #{specialty},
+        favorite_club = #{favoriteClub},
+        best_score = #{bestScore},
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateProProfile">
+        UPDATE accounts
+        SET
+        name = #{name},
+        image = #{image},
+        profile = #{profile},
+        favorite_club = #{favoriteClub},
         best_score = #{bestScore},
         sns = #{sns}
         WHERE id = #{id}

@@ -7,22 +7,7 @@
 </head>
 <body>
 
-<header class="site-header">
-  <div>
-    <p class="logo-text">Golf Lesson App</p>
-    <h1>ゴルフスイング改善アプリ</h1>
-    <p class="header-text">
-      悩みに合わせてレッスンを選び、動画でスイングを添削してもらえます。
-    </p>
-  </div>
-
-  <nav class="nav-menu">
-    <a href="/lessons">レッスン一覧</a>
-    <a href="/reservations">申込一覧</a>
-    <a href="/submissions">提出一覧</a>
-    <a href="/logout" class="logout-link">ログアウト</a>
-  </nav>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <main>
 

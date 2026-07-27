@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>プロフィール</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main>
+
+  <section class="page-heading">
+    <p class="page-label">PRO PROFILE</p>
+    <h1>プロフィール</h1>
+    <p>登録しているプロフィール情報を確認できます。</p>
+  </section>
+
+  <div class="card auth-card">
+
+    <div style="text-align:center; margin-bottom:24px;">
+
+      <img th:if="${account.image != null and account.image != ''}"
+           th:src="${account.image}"
+           alt="プロフィール画像"
+           style="width:160px; height:160px; border-radius:50%; object-fit:cover;">
+
+      <p th:if="${account.image == null or account.image == ''}"
+         class="form-help">
+        プロフィール画像は未設定です。
+      </p>
+
+    </div>
+
+    <p><strong>名前</strong></p>
+    <p th:text="${account.name}">名前</p>
+
+    <hr>
+
+    <p><strong>プロフィール</strong></p>
+
+    <p th:if="${account.profile != null and account.profile != ''}"
+       th:text="${account.profile}">
+      プロフィール
+    </p>
+
+    <p th:if="${account.profile == null or account.profile == ''}">
+      未設定
+    </p>
+
+    <hr>
+
+    <p><strong>得意クラブ</strong></p>
+
+    <p th:if="${account.favoriteClub != null and account.favoriteClub != ''}"
+       th:text="${account.favoriteClub}">
+      得意クラブ
+    </p>
+
+    <p th:if="${account.favoriteClub == null or account.favoriteClub == ''}">
+      未設定
+    </p>
+
+    <hr>
+
+    <p><strong>ベストスコア</strong></p>
+
+    <p th:if="${account.bestScore != null}"
+       th:text="${account.bestScore}">
+      ベストスコア
+    </p>
+
+    <p th:if="${account.bestScore == null}">
+      未設定
+    </p>
+
+    <hr>
+
+    <p><strong>SNS</strong></p>
+
+    <p th:if="${account.sns != null and account.sns != ''}"
+       th:text="${account.sns}"
+       style="white-space:pre-wrap;">
+      SNS
+    </p>
+
+    <p th:if="${account.sns == null or account.sns == ''}">
+      未設定
+    </p>
+
+    <div class="button-group">
+
+      <a th:href="@{/profile/edit}"
+         class="btn btn-primary">
+        編集する
+      </a>
+
+      <a th:href="@{/pro/home}"
+         class="btn btn-secondary">
+        ホームへ戻る
+      </a>
+
+    </div>
+
+  </div>
+
+</main>
+
+</body>
+</html>

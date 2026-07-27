@@ -16,7 +16,7 @@ public class Account {
 
     private String profile;
 
-    private String specialty;
+    private String favoriteClub;
 
     private Integer bestScore;
 
@@ -78,12 +78,12 @@ public class Account {
         this.profile = profile;
     }
 
-    public String getSpecialty() {
-        return specialty;
+    public String getFavoriteClub() {
+        return favoriteClub;
     }
 
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
+    public void setFavoriteClub(String favoriteClub) {
+        this.favoriteClub = favoriteClub;
     }
 
     public Integer getBestScore() {

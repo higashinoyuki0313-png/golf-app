@@ -8,6 +8,7 @@
     <select id="findAll" resultType="com.golf.app.golfapp.model.LessonSubmission">
         SELECT
         ls.id,
+        ls.reservation_id AS reservationId,
         ls.user_id AS userId,
         a.name AS userName,
         ls.lesson_id AS lessonId,
@@ -15,6 +16,7 @@
         ls.comment,
         ls.video_url AS videoUrl,
         ls.feedback,
+        ls.feedback_video_url AS feedbackVideoUrl,
         ls.status
         FROM lesson_submissions ls
         JOIN lessons l
@@ -24,9 +26,11 @@
         ORDER BY ls.id DESC
     </select>
 
-    <select id="findById" resultType="com.golf.app.golfapp.model.LessonSubmission">
+    <select id="findByProId"
+            resultType="com.golf.app.golfapp.model.LessonSubmission">
         SELECT
         ls.id,
+        ls.reservation_id AS reservationId,
         ls.user_id AS userId,
         a.name AS userName,
         ls.lesson_id AS lessonId,
@@ -34,6 +38,54 @@
         ls.comment,
         ls.video_url AS videoUrl,
         ls.feedback,
+        ls.feedback_video_url AS feedbackVideoUrl,
+        ls.status
+        FROM lesson_submissions ls
+        JOIN lessons l
+        ON ls.lesson_id = l.id
+        JOIN accounts a
+        ON ls.user_id = a.id
+        WHERE l.pro_id = #{proId}
+        ORDER BY ls.id DESC
+    </select>
+
+    <select id="findByUserId"
+            resultType="com.golf.app.golfapp.model.LessonSubmission">
+
+        SELECT
+        ls.id,
+        ls.reservation_id AS reservationId,
+        ls.user_id AS userId,
+        a.name AS userName,
+        ls.lesson_id AS lessonId,
+        l.title AS lessonTitle,
+        ls.comment,
+        ls.video_url AS videoUrl,
+        ls.feedback,
+        ls.feedback_video_url AS feedbackVideoUrl,
+        ls.status
+        FROM lesson_submissions ls
+        JOIN lessons l
+        ON ls.lesson_id = l.id
+        JOIN accounts a
+        ON ls.user_id = a.id
+        WHERE ls.user_id = #{userId}
+        ORDER BY ls.id DESC
+
+    </select>
+
+    <select id="findById" resultType="com.golf.app.golfapp.model.LessonSubmission">
+        SELECT
+        ls.id,
+        ls.reservation_id AS reservationId,
+        ls.user_id AS userId,
+        a.name AS userName,
+        ls.lesson_id AS lessonId,
+        l.title AS lessonTitle,
+        ls.comment,
+        ls.video_url AS videoUrl,
+        ls.feedback,
+        ls.feedback_video_url AS feedbackVideoUrl,
         ls.status
         FROM lesson_submissions ls
         JOIN lessons l
@@ -43,14 +95,39 @@
         WHERE ls.id = #{id}
     </select>
 
+    <select id="findByReservationId"
+            resultType="com.golf.app.golfapp.model.LessonSubmission">
+        SELECT
+        ls.id,
+        ls.reservation_id AS reservationId,
+        ls.user_id AS userId,
+        a.name AS userName,
+        ls.lesson_id AS lessonId,
+        l.title AS lessonTitle,
+        ls.comment,
+        ls.video_url AS videoUrl,
+        ls.feedback,
+        ls.feedback_video_url AS feedbackVideoUrl,
+        ls.status
+        FROM lesson_submissions ls
+        JOIN lessons l
+        ON ls.lesson_id = l.id
+        JOIN accounts a
+        ON ls.user_id = a.id
+        WHERE ls.reservation_id = #{reservationId}
+        ORDER BY ls.id DESC
+    </select>
+
     <insert id="insert">
         INSERT INTO lesson_submissions (
+        reservation_id,
         user_id,
         lesson_id,
         comment,
         video_url,
         status
         ) VALUES (
+        #{reservationId},
         #{userId},
         #{lessonId},
         #{comment},
@@ -63,8 +140,17 @@
         UPDATE lesson_submissions
         SET
         feedback = #{feedback},
+        feedback_video_url = #{feedbackVideoUrl},
         status = #{status}
         WHERE id = #{id}
     </update>
+
+    <delete id="deleteById">
+
+        DELETE FROM lesson_submissions
+
+        WHERE id = #{id}
+
+    </delete>
 
 </mapper>

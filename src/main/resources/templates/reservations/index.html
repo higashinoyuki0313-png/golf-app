@@ -2,7 +2,7 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>申込一覧</title>
+  <title>マイレッスン</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -10,68 +10,95 @@
 <main>
 
   <section class="hero">
-    <p class="section-label">RESERVATIONS</p>
-    <h2>申込一覧</h2>
-    <p>申し込んだレッスンの状況を確認できます。</p>
+    <p class="section-label">MY LESSONS</p>
+    <h2>マイレッスン</h2>
+    <p>申し込んだレッスンと提出状況を確認できます。</p>
   </section>
 
   <div class="card">
 
     <div th:if="${#lists.isEmpty(reservations)}">
-      <p>まだ申込はありません。</p>
+      <p>申し込んだレッスンはまだありません。</p>
     </div>
 
     <table class="table" th:if="${!#lists.isEmpty(reservations)}">
       <tr>
-        <th>ID</th>
-        <th>レッスンID</th>
-        <th>ユーザーID</th>
-        <th>ステータス</th>
-        <th>詳細</th>
+        <th>レッスン名</th>
+        <th>担当プロ</th>
+        <th>申込状況</th>
+        <th>提出状況</th>
+        <th>操作</th>
       </tr>
 
       <tr th:each="reservation : ${reservations}">
-        <td th:text="${reservation.id}"></td>
-        <td th:text="${reservation.lessonId}"></td>
-        <td th:text="${reservation.userId}"></td>
+
+        <td th:text="${reservation.lessonTitle}"></td>
+
+        <td th:text="${reservation.proName}"></td>
 
         <td>
-                    <span th:if="${reservation.status == 1}" class="status status-submitted">
-                        ● 申込済み
+                    <span th:if="${reservation.status == 1}">
+                        申込済み
                     </span>
 
-          <span th:if="${reservation.status == 2}" class="status status-completed">
-                        ● 承認済み
+          <span th:if="${reservation.status == 2}">
+                        承認済み
                     </span>
 
-          <span th:if="${reservation.status == 3}" class="status status-reviewing">
-                        ● キャンセル
+          <span th:if="${reservation.status == 3}">
+                        キャンセル
                     </span>
         </td>
 
         <td>
-          <a th:href="@{/reservations/{id}(id=${reservation.id})}"
-             class="btn btn-secondary">
-            詳細
+
+                    <span th:if="${reservation.submissionCount == 0}">
+                        未提出
+                    </span>
+
+          <span th:if="${reservation.submissionCount > 0
+                                   and reservation.completedSubmissionCount == 0}">
+                        添削待ち
+                    </span>
+
+          <span th:if="${reservation.completedSubmissionCount > 0}">
+                        添削済み
+                    </span>
+
+        </td>
+
+        <td>
+
+          <a th:if="${reservation.submissionCount == 0}"
+             th:href="@{/submissions/new/{reservationId}(reservationId=${reservation.id})}"
+             class="btn btn-primary">
+            動画を提出する
           </a>
 
-          <form th:if="${reservation.status == 1}"
-                th:action="@{/reservations/{id}/status/{status}(id=${reservation.id},status=3)}"
-                method="post"
-                style="display:inline;"
-                onsubmit="return confirm('この申込をキャンセルしますか？');">
-            <button type="submit" class="btn btn-danger">
-              キャンセル
-            </button>
-          </form>
+          <a th:if="${reservation.submissionCount > 0}"
+             href="/submissions"
+             class="btn btn-secondary">
+            提出内容を見る
+          </a>
+
+          <a th:if="${reservation.submissionCount > 0}"
+             th:href="@{/submissions/new/{reservationId}(reservationId=${reservation.id})}"
+             class="btn btn-primary">
+            再提出する
+          </a>
+
         </td>
+
       </tr>
+
     </table>
 
-    <br>
+  </div>
 
-    <a href="/user/home" class="btn btn-primary">
-      ホームへ戻る
+  <div style="margin-top:30px;">
+
+    <a href="/user/home" class="btn btn-secondary">
+      ← ホームへ戻る
     </a>
 
   </div>

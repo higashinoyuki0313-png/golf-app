@@ -2,44 +2,74 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>添削返信</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-<h1>添削フォーム</h1>
+<main>
 
-<p>提出内容</p>
+    <section class="hero">
+        <p class="section-label">FEEDBACK</p>
+        <h2>添削返信</h2>
+        <p th:text="${submission.lessonTitle}">レッスン名</p>
+    </section>
 
-<p th:text="${submission.comment}"></p>
+    <div class="card">
 
-<p>提出動画</p>
+        <p>
+            <strong>提出者：</strong>
+            <span th:text="${submission.userName}"></span>
+        </p>
 
-<a th:if="${submission.videoUrl != null}"
-   th:href="${submission.videoUrl}"
-   target="_blank">
-    動画を見る
-</a>
+        <p>
+            <strong>コメント：</strong>
+            <span th:text="${submission.comment}"></span>
+        </p>
 
-<form th:action="@{/submissions/{id}/feedback(id=${submission.id})}"
-        method="post">
+        <p>
+            <strong>動画URL：</strong>
+            <a th:href="${submission.videoUrl}"
+               th:text="${submission.videoUrl}"
+               target="_blank"></a>
+        </p>
 
-    <div>
-        <label>添削コメント</label><br>
+        <form
+                th:action="@{/submissions/{id}/feedback(id=${submission.id})}"
+                method="post">
 
-        <textarea
-                name="feedback"
-                rows="5"
-                cols="40">
-        </textarea>
+            <p>
+                添削動画URL
+                <input
+                        type="text"
+                        name="feedbackVideoUrl"
+                        th:value="${submission.feedbackVideoUrl}">
+            </p>
+
+            <p>
+                添削コメント
+                <textarea
+                        name="feedback"
+                        required
+                        th:text="${submission.feedback}">
+                </textarea>
+            </p>
+
+            <button type="submit" class="btn btn-primary">
+                添削を送信
+            </button>
+
+        </form>
+
+        <p style="margin-top:16px;">
+            <a href="/submissions" class="btn btn-secondary">
+                戻る
+            </a>
+        </p>
+
     </div>
 
-    <br>
-
-    <button type="submit">
-        送信
-    </button>
-
-</form>
+</main>
 
 </body>
 </html>

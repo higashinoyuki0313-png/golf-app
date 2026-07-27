@@ -6,30 +6,42 @@
 <mapper namespace="com.golf.app.golfapp.mapper.LessonMapper">
 
     <select id="findAll" resultType="com.golf.app.golfapp.model.Lesson">
-        SELECT *
+        SELECT
+        lessons.*,
+        accounts.name AS pro_name
         FROM lessons
-        ORDER BY id DESC
+        JOIN accounts
+        ON lessons.pro_id = accounts.id
+        ORDER BY lessons.id DESC
     </select>
 
     <select id="findById" resultType="com.golf.app.golfapp.model.Lesson">
-        SELECT *
+        SELECT
+        lessons.*,
+        accounts.name AS pro_name
         FROM lessons
-        WHERE id = #{id}
+        JOIN accounts
+        ON lessons.pro_id = accounts.id
+        WHERE lessons.id = #{id}
     </select>
 
     <insert id="insert">
         INSERT INTO lessons (
+        pro_id,
         title,
         content,
         image,
+        video,
         cause,
         improvement,
         practice,
         category
         ) VALUES (
+        #{proId},
         #{title},
         #{content},
         #{image},
+        #{video},
         #{cause},
         #{improvement},
         #{practice},
@@ -43,6 +55,7 @@
         title = #{title},
         content = #{content},
         image = #{image},
+        video = #{video},
         cause = #{cause},
         improvement = #{improvement},
         practice = #{practice},
@@ -56,10 +69,27 @@
     </delete>
 
     <select id="findByCategory" resultType="com.golf.app.golfapp.model.Lesson">
-        SELECT *
+        SELECT
+        lessons.*,
+        accounts.name AS pro_name
         FROM lessons
-        WHERE category = #{category}
-        ORDER BY id DESC
+        JOIN accounts
+        ON lessons.pro_id = accounts.id
+        WHERE lessons.category = #{category}
+        ORDER BY lessons.id DESC
+    </select>
+
+    <select id="findByProId"
+            parameterType="long"
+            resultType="com.golf.app.golfapp.model.Lesson">
+        SELECT
+        lessons.*,
+        accounts.name AS pro_name
+        FROM lessons
+        JOIN accounts
+        ON lessons.pro_id = accounts.id
+        WHERE lessons.pro_id = #{proId}
+        ORDER BY lessons.id DESC
     </select>
 
 </mapper>

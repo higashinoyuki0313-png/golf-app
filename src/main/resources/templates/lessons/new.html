@@ -7,82 +7,170 @@
 </head>
 <body>
 
-<main>
+<header th:replace="~{fragments/header :: header}"></header>
 
-  <section class="hero">
-    <p class="section-label">CREATE LESSON</p>
-    <h2>レッスン作成</h2>
-    <p>
-      受講者へ提供する動画添削レッスンを作成します。
-    </p>
+<main class="lesson-form-page">
+
+  <section class="page-heading lesson-form-heading">
+    <p class="page-label">CREATE LESSON</p>
+    <h1>レッスン作成</h1>
+    <p>受講者へ提供する動画添削レッスンを作成します。</p>
   </section>
 
-  <div class="card auth-card">
+  <section class="lesson-form-card">
 
-    <form action="/lessons" method="post">
+    <form th:action="@{/lessons}"
+          th:object="${lesson}"
+          method="post"
+          enctype="multipart/form-data"
+          class="lesson-form">
 
-      <div>
-        <label>カテゴリ</label><br>
-        <select name="category" required>
+      <div class="form-group">
+        <label for="category">カテゴリ</label>
+
+        <select id="category"
+                th:field="*{category}">
+
+          <option value="">選択してください</option>
           <option value="slice">スライス改善</option>
           <option value="hook">フック改善</option>
           <option value="distance">飛距離アップ</option>
           <option value="contact">ミート率アップ</option>
           <option value="shortgame">ショートゲーム</option>
+
         </select>
+
+        <p class="field-error"
+           th:if="${#fields.hasErrors('category')}"
+           th:errors="*{category}">
+          カテゴリエラー
+        </p>
       </div>
 
-      <div>
-        <label>レッスンタイトル</label><br>
-        <input type="text"
-               name="title"
-               placeholder="例：ドライバーのスライス改善レッスン"
-               required>
+      <div class="form-group">
+        <label for="title">レッスンタイトル</label>
+
+        <input id="title"
+               type="text"
+               th:field="*{title}"
+               placeholder="例：ドライバーのスライス改善レッスン">
+
+        <p class="form-help">
+          受講者が内容をイメージしやすいタイトルを入力してください。
+        </p>
+
+        <p class="field-error"
+           th:if="${#fields.hasErrors('title')}"
+           th:errors="*{title}">
+          タイトルエラー
+        </p>
       </div>
 
-      <div>
-        <label>画像URL</label><br>
-        <input type="text"
-               name="image"
-               placeholder="例：https://example.com/image.jpg">
+      <div class="form-group">
+        <label for="media">レッスン画像・動画</label>
+
+        <input id="media"
+               type="file"
+               name="media"
+               accept="image/*,video/*">
+
+        <p class="form-help">
+          画像または動画を1つ選択してください。
+        </p>
+
+        <p class="field-error"
+           th:if="${#fields.hasGlobalErrors()}"
+           th:each="error : ${#fields.globalErrors()}"
+           th:text="${error}">
+          ファイルエラー
+        </p>
       </div>
 
-      <div>
-        <label>レッスン内容</label><br>
-        <textarea name="content"
+      <div class="form-group">
+        <label for="content">レッスン内容</label>
+
+        <textarea id="content"
+                  th:field="*{content}"
                   rows="5"
-                  placeholder="レッスンの概要や受講内容を入力してください。"
-                  required></textarea>
+                  placeholder="レッスンの概要や受講内容を入力してください。"></textarea>
+
+        <p class="form-help">
+          レッスンで伝える内容を具体的に入力してください。
+        </p>
+
+        <p class="field-error"
+           th:if="${#fields.hasErrors('content')}"
+           th:errors="*{content}">
+          レッスン内容エラー
+        </p>
       </div>
 
-      <div>
-        <label>原因</label><br>
-        <textarea name="cause"
+      <div class="form-group">
+        <label for="cause">原因</label>
+
+        <textarea id="cause"
+                  th:field="*{cause}"
                   rows="4"
                   placeholder="改善したい原因を入力してください。"></textarea>
+
+        <p class="form-help">
+          スイングの問題点やミスの原因を入力してください。
+        </p>
+
+        <p class="field-error"
+           th:if="${#fields.hasErrors('cause')}"
+           th:errors="*{cause}">
+          原因エラー
+        </p>
       </div>
 
-      <div>
-        <label>改善ポイント</label><br>
-        <textarea name="improvement"
+      <div class="form-group">
+        <label for="improvement">改善ポイント</label>
+
+        <textarea id="improvement"
+                  th:field="*{improvement}"
                   rows="4"
                   placeholder="重点的に改善するポイントを入力してください。"></textarea>
+
+        <p class="form-help">
+          特に意識してほしい改善ポイントを入力してください。
+        </p>
+
+        <p class="field-error"
+           th:if="${#fields.hasErrors('improvement')}"
+           th:errors="*{improvement}">
+          改善ポイントエラー
+        </p>
       </div>
 
-      <div>
-        <label>おすすめ練習方法</label><br>
-        <textarea name="practice"
+      <div class="form-group">
+        <label for="practice">おすすめ練習方法</label>
+
+        <textarea id="practice"
+                  th:field="*{practice}"
                   rows="4"
                   placeholder="受講者に行ってほしい練習方法を入力してください。"></textarea>
+
+        <p class="form-help">
+          改善につながる練習方法やドリルを入力してください。
+        </p>
+
+        <p class="field-error"
+           th:if="${#fields.hasErrors('practice')}"
+           th:errors="*{practice}">
+          練習方法エラー
+        </p>
       </div>
 
-      <div style="display:flex; gap:12px; margin-top:24px;">
+      <div class="lesson-form-actions">
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit"
+                class="btn btn-primary">
           レッスンを作成
         </button>
 
-        <a href="/pro/home" class="btn btn-secondary">
+        <a th:href="@{/pro/home}"
+           class="btn btn-secondary">
           ← プロホームへ戻る
         </a>
 
@@ -90,7 +178,7 @@
 
     </form>
 
-  </div>
+  </section>
 
 </main>
 

@@ -11,22 +11,23 @@ public interface ReservationMapper {
 
     List<Reservation> findAll();
 
-    void save(Reservation reservation);
-
     Reservation findById(Long id);
 
     List<Reservation> findByLessonId(Long lessonId);
 
     List<Reservation> findByUserId(Long userId);
 
+    List<Reservation> findMyLessons(Long userId);
+
+    void save(Reservation reservation);
+
     void updateStatus(
-           @Param("id") Long id,
-           @Param("status") Integer status
+            @Param("id") Long id,
+            @Param("status") Integer status
     );
 
     Reservation findByLessonIdAndUserId(
             @Param("lessonId") Long lessonId,
             @Param("userId") Long userId
     );
-
 }

@@ -7,76 +7,219 @@
 </head>
 <body>
 
-<h1>提出一覧</h1>
+<header th:replace="~{fragments/header :: header}"></header>
 
-<div th:if="${#lists.isEmpty(submissions)}">
-    <p>まだ提出はありません。</p>
-</div>
+<main>
 
-<table class="table" th:if="${!#lists.isEmpty(submissions)}">
-    <tr>
-        <th>ID</th>
-        <th>レッスン名</th>
-        <th>ユーザーID</th>
-        <th>コメント</th>
-        <th>動画URL</th>
-        <th>ステータス</th>
-        <th>詳細</th>
-    </tr>
+    <section class="page-heading submissions-heading">
+        <p class="page-label">SUBMISSIONS</p>
+        <h1 th:text="${loginAccount.role == 2 ? '提出一覧' : '提出内容'}">
+            提出内容
+        </h1>
 
-    <tr th:each="submission : ${submissions}">
-        <td th:text="${submission.id}"></td>
-        <td th:text="${submission.lessonTitle}"></td>
-        <td th:text="${submission.userName}"></td>
-        <td th:text="${submission.comment}"></td>
+        <p th:text="${loginAccount.role == 2
+        ? '提出された動画を確認・添削できます。'
+        : '提出した動画と添削内容を確認できます。'}">
+        </p>
+    </section>
 
-        <td>
-            <a th:href="${submission.videoUrl}"
-               th:text="${submission.videoUrl}"
-               target="_blank">
-            </a>
-        </td>
+    <div class="empty-message card"
+         th:if="${#lists.isEmpty(submissions)}">
 
-        <td>
-           <span th:if="${submission.status == 1}" class="status status-submitted">
-    ● 提出済み
-</span>
+        <h2 th:text="${loginAccount.role == 2 ? 'まだ提出はありません' : 'まだ動画を提出していません'}">
+        </h2>
 
-            <span th:if="${submission.status == 2}" class="status status-reviewing">
-    ● 添削中
-</span>
+        <p th:text="${loginAccount.role == 2
+        ? '一般ユーザーから動画が提出されると、この画面に表示されます。'
+        : 'レッスン動画を提出すると、この画面で確認できます。'}">
+        </p>
 
-            <span th:if="${submission.status == 3}" class="status status-completed">
-    ● 添削完了
-</span>
-        </td>
+    </div>
 
-        <td>
-            <a th:href="@{/submissions/{id}(id=${submission.id})}"
-            class="btn btn-secondary">
-                詳細を見る
-            </a>
-        </td>
-    </tr>
-</table>
+    <div th:if="${!#lists.isEmpty(submissions)}"
+         class="submission-sections">
 
-<br>
+        <!-- 未対応 -->
+        <section class="submission-status-section">
 
-<div style="margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap;">
+            <div class="submission-section-heading">
+                <div>
+                    <span class="status-badge status-submitted">
+                        未対応
+                    </span>
+                    <h2>新しい提出</h2>
+                </div>
 
-    <a th:if="${loginAccount != null and loginAccount.role == 2}"
-       href="/pro/home"
-       class="btn btn-primary">
-        ← プロホームへ戻る
-    </a>
+                <span class="submission-section-count"
+                      th:text="${#lists.size(submissions.?[status == 1])} + '件'">
+                    0件
+                </span>
+            </div>
 
-    <a th:if="${loginAccount != null and loginAccount.role == 1}"
-       href="/user/home"
-       class="btn btn-primary">
-        ← ホームへ戻る
-    </a>
+            <div class="empty-status-message"
+                 th:if="${#lists.isEmpty(submissions.?[status == 1])}">
+                未対応の提出はありません。
+            </div>
 
-</div>
+            <div class="submission-card-list"
+                 th:if="${!#lists.isEmpty(submissions.?[status == 1])}">
+
+                <article class="submission-card"
+                         th:each="submission : ${submissions}"
+                         th:if="${submission.status == 1}">
+
+                    <div class="submission-card-top">
+                        <div>
+                            <p class="submission-label">レッスン名</p>
+                            <h3 th:text="${submission.lessonTitle}">
+                                レッスン名
+                            </h3>
+                        </div>
+
+                        <span class="status-badge status-submitted">
+                            未対応
+                        </span>
+                    </div>
+
+                    <dl class="submission-info">
+                        <div>
+                            <dt>提出者</dt>
+                            <dd th:text="${submission.userName}">ユーザー名</dd>
+                        </div>
+
+                        <div>
+                            <dt>コメント</dt>
+                            <dd th:text="${submission.comment}">コメント</dd>
+                        </div>
+                    </dl>
+
+                    <div class="submission-actions">
+
+                        <a th:href="@{/submissions/{id}(id=${submission.id})}"
+                           class="btn btn-secondary">
+                            詳細を見る
+                        </a>
+
+                        <a th:if="${loginAccount != null and loginAccount.role == 2}"
+                           th:href="@{/submissions/{id}/feedback(id=${submission.id})}"
+                           class="btn btn-primary">
+                            添削する
+                        </a>
+
+                        <form th:if="${loginAccount != null and loginAccount.role == 1}"
+                              th:action="@{/submissions/{id}/delete(id=${submission.id})}"
+                              method="post"
+                              onsubmit="return confirm('この提出を削除しますか？');">
+
+                            <button type="submit"
+                                    class="btn btn-danger">
+                                削除する
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <!-- 添削完了 -->
+        <section class="submission-status-section">
+
+            <div class="submission-section-heading">
+                <div>
+                    <span class="status-badge status-completed">
+                        添削完了
+                    </span>
+                    <h2>完了した提出</h2>
+                </div>
+
+                <span class="submission-section-count"
+                      th:text="${#lists.size(submissions.?[status == 3])} + '件'">
+                    0件
+                </span>
+            </div>
+
+            <div class="empty-status-message"
+                 th:if="${#lists.isEmpty(submissions.?[status == 3])}">
+                添削完了の提出はありません。
+            </div>
+
+            <div class="submission-card-list"
+                 th:if="${!#lists.isEmpty(submissions.?[status == 3])}">
+
+                <article class="submission-card"
+                         th:each="submission : ${submissions}"
+                         th:if="${submission.status == 3}">
+
+                    <div class="submission-card-top">
+                        <div>
+                            <p class="submission-label">レッスン名</p>
+                            <h3 th:text="${submission.lessonTitle}">
+                                レッスン名
+                            </h3>
+                        </div>
+
+                        <span class="status-badge status-completed">
+                            添削完了
+                        </span>
+                    </div>
+
+                    <dl class="submission-info">
+                        <div>
+                            <dt>提出者</dt>
+                            <dd th:text="${submission.userName}">ユーザー名</dd>
+                        </div>
+
+                        <div>
+                            <dt>コメント</dt>
+                            <dd th:text="${submission.comment}">コメント</dd>
+                        </div>
+                    </dl>
+
+                    <div class="submission-actions">
+
+                        <a th:href="@{/submissions/{id}(id=${submission.id})}"
+                           class="btn btn-secondary">
+                            詳細を見る
+                        </a>
+
+                        <a th:if="${loginAccount != null and loginAccount.role == 2}"
+                           th:href="@{/submissions/{id}/feedback(id=${submission.id})}"
+                           class="btn btn-primary">
+                            編集する
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="page-actions">
+
+        <a th:if="${loginAccount != null and loginAccount.role == 2}"
+           th:href="@{/pro/home}"
+           class="btn btn-secondary">
+            ← プロホームへ戻る
+        </a>
+
+        <a th:if="${loginAccount != null and loginAccount.role == 1}"
+           th:href="@{/user/home}"
+           class="btn btn-secondary">
+            ← ホームへ戻る
+        </a>
+
+    </div>
+
+</main>
 
 </body>
 </html>

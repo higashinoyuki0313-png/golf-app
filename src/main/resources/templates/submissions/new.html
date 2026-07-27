@@ -3,30 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <title>動画提出</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-<h1>動画提出</h1>
+<header th:replace="~{fragments/header :: header}"></header>
 
-<form th:action="@{/lessons/{id}/submit(id=${lessonId})}" method="post">
+<main>
 
-  <div>
-    <label>コメント</label><br>
-    <textarea name="comment" rows="5" cols="40"></textarea>
+  <section class="hero">
+    <p class="section-label">SUBMISSION</p>
+    <h2>動画提出</h2>
+    <p>レッスン動画とコメントを提出してください。</p>
+  </section>
+
+  <div class="card">
+
+    <div class="form-error"
+         th:if="${errorMessage != null}"
+         th:text="${errorMessage}">
+      エラーメッセージ
+    </div>
+
+    <form
+            id="submissionForm"
+            class="submission-form"
+            th:action="@{/submissions/new/{reservationId}(reservationId=${reservation.id})}"
+            method="post"
+            enctype="multipart/form-data">
+
+      <div class="form-group">
+        <label for="comment">コメント</label>
+
+        <textarea
+                id="comment"
+                name="comment"
+                rows="5"
+                placeholder="例：ドライバーでスライスが出ます。ダウンスイングのクラブ軌道を見てください。"
+                th:text="${comment}"
+                required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="video">レッスン動画</label>
+
+        <input
+                id="video"
+                type="file"
+                name="video"
+                accept="video/mp4,video/quicktime,video/*"
+                required>
+
+        <small class="form-hint">
+          mp4・mov形式の動画をアップロードしてください。
+        </small>
+      </div>
+
+      <div class="page-actions">
+
+        <button
+                id="submissionButton"
+                type="submit"
+                class="btn btn-primary">
+          提出する
+        </button>
+
+        <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="history.back()">
+          戻る
+        </button>
+
+      </div>
+
+    </form>
+
   </div>
 
-  <br>
+</main>
 
-  <div>
-    <label>動画URL</label><br>
-    <input type="text" name="videoUrl">
-  </div>
+<script>
+  const submissionForm = document.getElementById("submissionForm");
+  const submissionButton = document.getElementById("submissionButton");
 
-  <br>
+  let isSubmitting = false;
 
-  <button type="submit">提出する</button>
+  submissionForm.addEventListener("submit", function (event) {
 
-</form>
+    if (isSubmitting) {
+      event.preventDefault();
+      return;
+    }
+
+    isSubmitting = true;
+
+    submissionButton.disabled = true;
+    submissionButton.textContent = "アップロード中...";
+  });
+</script>
 
 </body>
 </html>

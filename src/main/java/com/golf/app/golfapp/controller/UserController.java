@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HomeController {
+public class UserController {
 
     @GetMapping("/")
     public String root() {
@@ -19,7 +19,6 @@ public class HomeController {
             HttpSession session,
             Model model
     ) {
-
         Account loginAccount =
                 (Account) session.getAttribute("loginAccount");
 
@@ -27,9 +26,12 @@ public class HomeController {
             return "redirect:/login";
         }
 
+        if (loginAccount.getRole() != 1) {
+            return "redirect:/pro/home";
+        }
+
         model.addAttribute("account", loginAccount);
 
         return "user/home";
     }
-
 }

@@ -7,47 +7,24 @@
 </head>
 <body>
 
-<header class="site-header">
-  <div>
-    <p class="logo-text">Golf Lesson App</p>
-    <h1>プロホーム</h1>
-    <p class="header-text">
-      投稿やレッスンを管理し、受講者の動画を添削できます。
-    </p>
-  </div>
-
-  <nav class="nav-menu">
-    <a href="/posts">投稿一覧</a>
-    <a href="/lessons">レッスン一覧</a>
-    <a href="/lessons/new">レッスン作成</a>
-    <a href="/submissions">提出一覧</a>
-    <a href="/logout" class="btn btn-danger logout-link">ログアウト</a>
-  </nav>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <main>
 
   <section class="hero">
-    <p class="section-label">PRO MENU</p>
-    <h2>プロ向けメニュー</h2>
+    <p class="section-label">PRO DASHBOARD</p>
+    <h2>プロ向け管理画面</h2>
     <p>
-      投稿・レッスンの管理や、受講者の動画添削を行います。
+      レッスン作成、提出動画の確認、プロフィール管理を行います。
     </p>
   </section>
 
   <section class="cards">
 
     <div class="card">
-      <a href="/posts">
-        <h3>投稿一覧</h3>
-        <p>投稿した改善記事を確認・編集・削除します。</p>
-      </a>
-    </div>
-
-    <div class="card">
-      <a href="/lessons">
-        <h3>レッスン一覧</h3>
-        <p>作成したレッスンを確認・編集・削除します。</p>
+      <a href="/profile">
+        <h3>プロフィール</h3>
+        <p>プロフィール画像、自己紹介、得意クラブ、SNSを編集します。</p>
       </a>
     </div>
 
@@ -59,9 +36,16 @@
     </div>
 
     <div class="card">
+      <a th:href="@{/pro/lessons}">
+        <h3>レッスン一覧</h3>
+        <p>自分が作成したレッスンを確認・編集します。</p>
+      </a>
+    </div>
+
+    <div class="card">
       <a href="/submissions">
         <h3>提出一覧</h3>
-        <p>受講者から提出された動画を確認し、添削を行います。</p>
+        <p>受講者から提出された動画を確認し、添削状況を管理します。</p>
       </a>
     </div>
 

@@ -2,19 +2,57 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>申し込み完了</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>申込完了</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 
-<h1>申込完了</h1>
+<header th:replace="~{fragments/header :: header}"></header>
 
-<p>
-  <span th:text="${lesson.title}"></span>
-</p>
+<main>
 
-<a href="/lessons">
-  レッスン一覧へ戻る
-</a>
+    <section class="page-heading complete-heading">
+        <p class="page-label">APPLICATION COMPLETE</p>
+        <h1>レッスン申込みが完了しました</h1>
+        <p>レッスンの申込みと動画の提出を受け付けました。</p>
+    </section>
+
+    <section class="card complete-card">
+
+        <div class="complete-icon">✓</div>
+
+        <p class="complete-message">
+            レッスンの申込みと動画の提出が完了しました。
+        </p>
+
+        <div class="complete-next-step">
+            <p class="complete-next-label">次のステップ</p>
+
+            <h2>添削結果をお待ちください</h2>
+
+            <p>
+                プロが動画を確認し、添削が完了すると、<br>
+                マイレッスンから結果をご確認いただけます。
+            </p>
+        </div>
+
+        <div class="complete-actions">
+            <a th:href="@{/my-lessons}" class="btn btn-primary">
+                マイレッスンへ
+            </a>
+
+            <a th:href="@{/lessons}" class="btn btn-secondary">
+                レッスン一覧へ
+            </a>
+        </div>
+
+    </section>
+
+</main>
 
 </body>
 </html>

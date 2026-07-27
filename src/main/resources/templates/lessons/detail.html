@@ -7,98 +7,130 @@
 </head>
 <body>
 
+<header th:replace="~{fragments/header :: header}"></header>
 <main>
 
-    <section class="hero">
-        <p class="section-label">LESSON DETAIL</p>
-        <h2 th:text="${lesson.title}">レッスンタイトル</h2>
-        <p th:text="${lesson.content}">レッスン内容</p>
+    <section class="page-heading lesson-detail-heading">
+        <p class="page-label">LESSON DETAIL</p>
+
+        <h1 th:text="${lesson.title}">
+            レッスンタイトル
+        </h1>
+
+        <p class="lesson-pro">
+            担当プロ：
+            <span th:text="${lesson.proName}">プロ名</span>
+        </p>
     </section>
 
-    <div class="card">
+    <section class="card lesson-detail-card">
 
-        <div th:if="${lesson.image != null and lesson.image != ''}">
-            <img th:src="${lesson.image}"
-                 style="max-width:100%; border-radius:14px; margin-bottom:24px;">
+        <div class="lesson-image-wrapper"
+             th:if="${(lesson.image != null and lesson.image != '') or (lesson.video != null and lesson.video != '')}">
+
+            <img th:if="${lesson.image != null and lesson.image != ''}"
+                 th:src="${lesson.image}"
+                 class="lesson-image"
+                 alt="レッスン画像">
+
+            <video th:if="${lesson.video != null and lesson.video != ''}"
+                   controls
+                   class="lesson-image">
+                <source th:src="${lesson.video}">
+                動画を再生できません。
+            </video>
+
         </div>
 
-        <p>
-            <strong>カテゴリ：</strong>
-            <span th:text="${lesson.category}">カテゴリ</span>
-        </p>
+        <div class="lesson-summary">
 
-        <p>
-            <strong>申込者数：</strong>
-            <span th:text="${reservationCount}">0</span>
-        </p>
+            <p class="lesson-content"
+               th:text="${lesson.content}">
+                レッスン内容
+            </p>
 
-        <div th:if="${lesson.cause != null and lesson.cause != ''}">
-            <h3>原因</h3>
+            <div class="lesson-meta">
+
+                <div class="lesson-meta-item">
+                    <span class="lesson-meta-label">カテゴリ</span>
+                    <span th:text="${lesson.category}">カテゴリ</span>
+                </div>
+
+                <div class="lesson-meta-item">
+                    <span class="lesson-meta-label">申込者数</span>
+                    <span>
+                        <span th:text="${reservationCount}">0</span>名
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="lesson-section"
+             th:if="${lesson.cause != null and lesson.cause != ''}">
+            <h2>原因</h2>
             <p th:text="${lesson.cause}"></p>
         </div>
 
-        <div th:if="${lesson.improvement != null and lesson.improvement != ''}">
-            <h3>改善ポイント</h3>
+        <div class="lesson-section"
+             th:if="${lesson.improvement != null and lesson.improvement != ''}">
+            <h2>改善ポイント</h2>
             <p th:text="${lesson.improvement}"></p>
         </div>
 
-        <div th:if="${lesson.practice != null and lesson.practice != ''}">
-            <h3>おすすめ練習方法</h3>
+        <div class="lesson-section"
+             th:if="${lesson.practice != null and lesson.practice != ''}">
+            <h2>おすすめ練習方法</h2>
             <p th:text="${lesson.practice}"></p>
         </div>
 
-        <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+        <div class="page-actions">
 
             <form th:if="${loginAccount != null and loginAccount.role == 1}"
                   th:action="@{/lessons/{id}/apply(id=${lesson.id})}"
                   method="post">
+
                 <button type="submit" class="btn btn-primary">
                     レッスン申込
                 </button>
+
             </form>
 
-            <a th:if="${loginAccount != null and loginAccount.role == 2}"
+            <a th:if="${loginAccount != null and loginAccount.role == 1}"
+               th:href="@{/my-lessons}"
+               class="btn btn-secondary">
+                マイレッスンを見る
+            </a>
+
+            <a th:if="${loginAccount != null
+        and loginAccount.role == 2
+        and lesson.proId == loginAccount.id}"
                th:href="@{/lessons/{id}/edit(id=${lesson.id})}"
                class="btn btn-secondary">
                 編集する
             </a>
 
-            <form th:if="${loginAccount != null and loginAccount.role == 2}"
+            <form th:if="${loginAccount != null
+        and loginAccount.role == 2
+        and lesson.proId == loginAccount.id}"
                   th:action="@{/lessons/{id}/delete(id=${lesson.id})}"
                   method="post"
                   onsubmit="return confirm('本当に削除しますか？');">
+
                 <button type="submit" class="btn btn-danger">
                     削除
                 </button>
             </form>
 
-            <a href="/lessons" class="btn btn-secondary">
+            <a th:href="@{/lessons}"
+               class="btn btn-secondary">
                 ← 一覧へ戻る
             </a>
 
         </div>
 
-    </div>
-
-    <div th:if="${loginAccount != null and loginAccount.role == 2}"
-         class="card"
-         style="margin-top:24px;">
-
-        <h3>申込者一覧</h3>
-
-        <table class="table" th:if="${reservations != null}">
-            <tr>
-                <th>予約ID</th>
-                <th>ユーザーID</th>
-            </tr>
-
-            <tr th:each="reservation : ${reservations}">
-                <td th:text="${reservation.id}"></td>
-                <td th:text="${reservation.userId}"></td>
-            </tr>
-        </table>
-
-    </div>
+    </section>
 
 </main>
 

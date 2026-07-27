@@ -1,83 +1,154 @@
+/* ==========================================
+   共通レイアウト
+========================================== */
+
 body {
-    font-family: sans-serif;
     margin: 0;
     background: #f3f6f4;
     color: #26332c;
-}
-
-.site-header {
-    background: linear-gradient(135deg, #0f5132, #1f7a4d);
-    color: white;
-    padding: 32px 48px;
-}
-
-.logo-text {
-    margin: 0 0 8px;
-    font-size: 13px;
-    letter-spacing: 2px;
-    opacity: 0.85;
-}
-
-.site-header h1 {
-    margin: 0;
-    font-size: 34px;
-}
-
-.header-text {
-    margin: 12px 0 0;
-    opacity: 0.9;
-}
-
-.nav-menu {
-    margin-top: 24px;
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.nav-menu a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    background: rgba(255, 255, 255, 0.16);
-    padding: 10px 16px;
-    border-radius: 999px;
-}
-
-.nav-menu a:hover {
-    background: rgba(255, 255, 255, 0.28);
-}
-
-.logout-link {
-    margin-left: auto;
+    font-family: sans-serif;
 }
 
 main {
     padding: 40px 48px;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #e5e5e5;
+}
+
+
+/* ==========================================
+   ヘッダー
+========================================== */
+
+.site-header {
+    padding: 0;
+    background: linear-gradient(135deg, #0f5132, #1f7a4d);
+    color: white;
+}
+
+.header-inner {
+    max-width: 1200px;
+    min-height: 58px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.logo {
+    flex-shrink: 0;
+    color: white;
+    font-size: 28px;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.header-nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-nav a {
+    padding: 8px 12px;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.header-nav a:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.header-nav a:last-child {
+    margin-left: auto;
+}
+
+
+/* ==========================================
+   ページ見出し
+========================================== */
+
 .hero {
     max-width: 760px;
-    margin-bottom: 32px;
+    margin: 0 auto 32px;
+    text-align: center;
 }
 
 .section-label {
-    color: #1f7a4d;
-    font-weight: bold;
-    font-size: 13px;
-    letter-spacing: 2px;
     margin: 0 0 8px;
+    color: #1f7a4d;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
 }
 
 .hero h2 {
-    font-size: 30px;
     margin: 0 0 12px;
+    font-size: 30px;
 }
 
 .hero p {
+    color: #5d6b63;
     line-height: 1.8;
+}
+
+.page-heading {
+    max-width: 520px;
+    margin: 0 auto 24px;
+}
+
+.page-label {
+    margin: 0;
+    color: #1f7a4d;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.page-heading h1 {
+    margin: 8px 0;
+    color: #0f5132;
+    font-size: 32px;
+}
+
+.page-heading p:last-child {
+    margin: 0;
     color: #5d6b63;
 }
+
+.page-title {
+    margin-bottom: 10px;
+    color: #087a2d;
+    font-size: 40px;
+    text-align: center;
+}
+
+.page-description {
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 18px;
+    text-align: center;
+}
+
+
+/* ==========================================
+   カード共通
+========================================== */
 
 .cards {
     display: grid;
@@ -86,11 +157,11 @@ main {
 }
 
 .card {
-    background: white;
-    border-radius: 18px;
     padding: 26px;
-    box-shadow: 0 10px 24px rgba(15, 81, 50, 0.10);
+    background: white;
     border: 1px solid #e4ece7;
+    border-radius: 18px;
+    box-shadow: 0 10px 24px rgba(15, 81, 50, 0.10);
     transition: 0.2s;
 }
 
@@ -99,55 +170,61 @@ main {
     box-shadow: 0 16px 32px rgba(15, 81, 50, 0.16);
 }
 
-.card a {
+.card a:not(.btn) {
+    display: block;
     color: inherit;
     text-decoration: none;
-    display: block;
 }
 
 .card-label {
     display: inline-block;
+    margin-bottom: 16px;
+    padding: 6px 10px;
     background: #e7f2ec;
     color: #0f5132;
+    border-radius: 999px;
     font-size: 12px;
     font-weight: bold;
-    padding: 6px 10px;
-    border-radius: 999px;
-    margin-bottom: 16px;
 }
 
 .card h3 {
+    margin: 0 0 12px;
     color: #0f5132;
     font-size: 24px;
-    margin: 0 0 12px;
 }
 
 .card p {
+    margin: 0;
     color: #5d6b63;
     line-height: 1.7;
-    margin: 0;
 }
 
-.status-submitted {
-    color: #2196f3;
+.auth-card {
+    max-width: 520px;
+    margin: 0 auto;
 }
 
-.status-reviewing {
-    color: #ff9800;
-}
 
-.status-completed {
-    color: #4caf50;
-}
+/* ==========================================
+   ボタン共通
+========================================== */
 
 .btn {
-    display: inline-block;
+    min-width: 120px;
+    min-height: 42px;
+    padding: 10px 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    text-decoration: none;
+    border-radius: 999px;
+    box-sizing: border-box;
+    font-size: 14px;
     font-weight: bold;
+    line-height: 1;
+    text-decoration: none;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 .btn-primary {
@@ -156,124 +233,1355 @@ main {
 }
 
 .btn-secondary {
-    background: #1976d2;
-    color: white;
+    background: white;
+    color: #0f5132;
+    border: 1px solid #0f5132;
 }
 
 .btn-danger {
-    background: #d32f2f;
-    color: white;
+    background-color: #d9534f;
+    color: #ffffff;
+    border: none;
 }
 
-.table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
-    background:#fff;
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.auth-card .btn-primary {
+    width: 100%;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.page-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+
+/* ==========================================
+   フォーム共通
+========================================== */
+
+input,
+textarea,
+select {
+    width: 100%;
+    max-width: 420px;
+    margin-top: 6px;
+    padding: 12px;
+    border: 1px solid #d9e2dc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    font-size: 15px;
+}
+
+textarea {
+    resize: vertical;
+    line-height: 1.7;
+}
+
+form div {
+    margin-bottom: 20px;
+}
+
+label {
+    color: #0f5132;
+    font-weight: bold;
+}
+
+.form-help {
+    margin: 8px 0 0;
+    color: #6b776f;
+    font-size: 13px;
+}
+
+.field-error {
+    margin: 8px 0 0;
+    color: #d32f2f;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.error {
+    margin-bottom: 20px;
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+.error-message {
+    background: #fdeaea;
+    color: #c62828;
+    border: 1px solid #f5b5b5;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* ==========================================
+   テーブル共通
+========================================== */
+
+.table {
+    width: 100%;
+    margin-top: 20px;
+    background: white;
+    border-collapse: collapse;
 }
 
 .table th,
-.table td{
-    border:1px solid #ddd;
-    padding:12px;
-    text-align:left;
+.table td {
+    padding: 14px;
+    border: 1px solid #ddd;
+    text-align: left;
+    vertical-align: middle;
+    line-height: 1.6;
 }
 
-.table th{
-    background:#f5f5f5;
+.table th {
+    background: #f5f5f5;
     text-align: center;
 }
 
-.status {
-    font-weight: bold;
-    display: inline-block;
-}
-
-.btn:hover{
-    opacity:0.9;
-}
-
-.table tr:hover{
-    background:#f8fbf9;
-}
-
-.table td{
-    vertical-align:middle;
+.table tr:hover {
+    background: #f8fbf9;
 }
 
 .table td:last-child,
-.table th:last-child{
-    text-align:center;
+.table th:last-child {
+    text-align: center;
 }
 
-.table td:nth-child(6),
-.table th:nth-child(6){
-    text-align:center;
+.table td:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-input{
-    width:100%;
-    max-width:420px;
-    padding:12px;
-    margin-top:6px;
-    border:1px solid #d9e2dc;
-    border-radius:10px;
-    font-size:15px;
-    box-sizing:border-box;
+.table .btn {
+    min-width: 150px;
+    height: 44px;
+    margin: 4px 0;
 }
 
-form div{
-    margin-bottom:20px;
+
+/* ==========================================
+   ステータス表示
+========================================== */
+
+.status-badge {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
-label{
-    font-weight:bold;
-    color:#0f5132;
+.status-not-submitted {
+    background: #eeeeee;
+    color: #555;
 }
 
-.error{
-    color:#d32f2f;
-    font-weight:bold;
-    margin-bottom:20px;
+.status-waiting {
+    background: #fff0d6;
+    color: #9a5700;
 }
 
-hr{
-    margin:30px 0;
-    border:none;
-    border-top:1px solid #e5e5e5;
+.status-completed {
+    background: #dff3e7;
+    color: #176b3a;
 }
 
-.auth-card{
-    max-width: 520px;
+
+/* ==========================================
+   投稿
+========================================== */
+
+.new-post-btn {
+    display: inline-block;
+    padding: 12px 18px;
+    background: #087a2d;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.post-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.post-card {
+    padding: 24px;
+    background: white;
+    border: 1px solid #d6e6d6;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.post-card:hover {
+    border-color: #087a2d;
+}
+
+.post-tag {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    background: #e8f4ff;
+    color: #087a2d;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+.post-title {
+    margin-bottom: 12px;
+    color: #087a2d;
+    font-size: 24px;
+}
+
+.post-content {
+    color: #555;
+    line-height: 1.7;
+}
+
+.detail-link {
+    display: inline-block;
+    margin-top: 16px;
+    margin-right: 16px;
+    color: #087a2d;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+/* ==========================================
+   レッスン詳細
+========================================== */
+
+.lesson-detail-heading {
+    max-width: 900px;
+}
+
+.lesson-pro{
+    color: #666;
+    font-size: 14px;
+    margin: 8px 0 12px;
+    font-weight: 500;
+}
+
+.lesson-pro span {
+    color: #0f5132;
+    font-weight: bold;
+}
+
+.lesson-detail-card {
+    max-width: 900px;
     margin: 0 auto;
 }
 
-.hero{
-    max-width:760px;
-    margin:0 auto 32px;
-    text-align:center;
+.lesson-image-wrapper {
+    margin-bottom: 28px;
 }
 
-.auth-card .btn-primary{
-    background:#0f5132;
-    color:white;
-    width:100%;
+.lesson-image {
+    display: block;
+    width: 100%;
+    max-height: 480px;
+    border-radius: 14px;
+    object-fit: cover;
 }
 
-textarea,
-select{
-    width:100%;
-    max-width:420px;
-    padding:12px;
-    margin-top:6px;
-    border:1px solid #d9e2dc;
-    border-radius:10px;
-    font-size:15px;
-    box-sizing:border-box;
-    font-family:sans-serif;
+.lesson-edit-media {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    max-height: 300px;
+    margin-top: 10px;
+    background: #f3f6f4;
+    border-radius: 10px;
+    object-fit: contain;
 }
 
-textarea{
-    resize:vertical;
-    line-height:1.7;
+.lesson-summary {
+    margin-bottom: 10px;
+}
+
+.lesson-content {
+    margin: 0;
+    color: #45534b;
+    font-size: 16px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+}
+
+.lesson-meta {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.lesson-meta-item {
+    min-width: 180px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f3f8f5;
+    border: 1px solid #dfe9e3;
+    border-radius: 10px;
+}
+
+.lesson-meta-label {
+    color: #0f5132;
+    font-weight: bold;
+}
+
+.lesson-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e9e5;
+}
+
+.lesson-section h2 {
+    margin: 0 0 12px;
+    color: #0f5132;
+    font-size: 21px;
+}
+
+.lesson-section p {
+    margin: 0;
+    color: #4f5e55;
+    line-height: 1.9;
+    white-space: pre-wrap;
+}
+
+/* ==========================================
+   マイレッスン
+========================================== */
+
+.my-lessons-heading {
+    max-width: 1100px;
+}
+
+.my-lessons-card {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.empty-message {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-message h2 {
+    margin-bottom: 12px;
+    color: #0f5132;
+}
+
+.empty-message p {
+    margin-bottom: 24px;
+    color: #5d6b63;
+    line-height: 1.7;
+}
+
+/* レッスンごとのカード */
+
+.reservation-card {
+    margin-bottom: 16px;
+    padding: 20px 24px;
+}
+
+.reservation-card:hover{
+    transform:none;
+    box-shadow:0 10px 24px rgba(15,81,50,.10);
+}
+
+.reservation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.reservation-header h2 {
+    margin: 0 0 6px;
+    color: #0f5132;
+    font-size: 24px;
+}
+
+.reservation-pro {
+    margin: 0;
+    color: #68766e;
+    font-size: 14px;
+}
+
+.reservation-pro span {
+    color: #36433b;
+    font-weight: bold;
+}
+
+.reservation-status {
+    flex-shrink: 0;
+}
+
+/* 提出回数などの概要 */
+
+.reservation-info {
+    margin-top: 14px;
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    background: #f3f8f5;
+    border: 1px solid #e0e9e4;
+    border-radius: 10px;
+    color: #5d6b63;
+    font-size: 14px;
+}
+
+.reservation-info strong {
+    margin: 0 3px;
+    color: #0f5132;
+    font-size: 17px;
+}
+
+.reservation-actions {
+    margin-top: 14px;
+}
+
+/* 提出一覧の折りたたみ */
+
+.submission-details {
+    margin-top: 14px;
+}
+
+.submission-summary {
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f5f8f6;
+    color: #0f5132;
+    border: 1px solid #dfe9e3;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    list-style: none;
+}
+
+.submission-summary:hover {
+    background: #edf5f1;
+}
+
+.submission-summary::-webkit-details-marker {
+    display: none;
+}
+
+.summary-open {
+    display: none;
+}
+
+.submission-details[open] .summary-closed {
+    display: none;
+}
+
+.submission-details[open] .summary-open {
+    display: inline;
+}
+
+/* 展開後の提出カード */
+
+.submission-list {
+    margin-top: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.submission-card {
+    padding: 14px 16px;
+    background: #fbfdfc;
+    border: 1px solid #e0e7e3;
+    border-radius: 10px;
+}
+
+.submission-card-header {
+    margin-bottom: 8px;
+}
+
+.submission-comment {
+    margin: 0;
+    display: -webkit-box;
+    overflow: hidden;
+    color: #45534b;
+    line-height: 1.6;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+/* ==========================================
+   プロレッスン一覧
+========================================== */
+
+.pro-lesson-cards {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pro-lesson-cards .card {
+    display: flex;
+    flex-direction: column;
+}
+
+.pro-lesson-cards .lesson-image,
+.pro-lesson-cards .lesson-video {
+    display: block;
+    width: 100%;
+    height: 220px;
+    margin-bottom: 16px;
+    background: #f3f6f4;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.pro-lesson-cards .card > p:not(.section-label) {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.lesson-actions {
+    margin-top: 15px;
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.lesson-actions form {
+    margin: 0;
+}
+
+.pro-lesson-cards .empty-message {
+    grid-column: 1 / -1;
+    width: auto;
+    padding: 40px 20px;
+    background: white;
+    border: 1px solid #e4ece7;
+    border-radius: 18px;
+    text-align: center;
+}
+/* ==========================================
+   提出一覧
+========================================== */
+
+.submissions-heading {
+    max-width: 1100px;
+}
+
+.submission-sections {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    gap: 28px;
+}
+
+.submission-status-section {
+    padding: 24px;
+    background: white;
+    border: 1px solid #e1e9e4;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(15, 81, 50, 0.07);
+}
+
+.submission-section-heading {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.submission-section-heading > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.submission-section-heading h2 {
+    margin: 0;
+    color: #0f5132;
+    font-size: 22px;
+}
+
+.submission-section-count {
+    min-width: 48px;
+    padding: 7px 12px;
+    background: #f0f5f2;
+    color: #435149;
+    border-radius: 999px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.submission-card-list {
+    display: grid;
+    gap: 16px;
+}
+
+.submission-status-section .submission-card {
+    padding: 20px;
+    background: #fbfdfc;
+    border: 1px solid #e0e7e3;
+    border-radius: 12px;
+}
+
+.submission-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.submission-label {
+    margin: 0 0 5px;
+    color: #718078;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.submission-card h3 {
+    margin: 0;
+    color: #0f5132;
+    font-size: 20px;
+}
+
+.submission-info {
+    margin: 18px 0 0;
+}
+
+.submission-info > div {
+    padding: 10px 0;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 12px;
+    border-top: 1px solid #e7ece9;
+}
+
+.submission-info dt {
+    color: #647169;
+    font-weight: bold;
+}
+
+.submission-info dd {
+    margin: 0;
+    color: #36433b;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.submission-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.submission-actions form {
+    margin: 0;
+}
+
+.empty-status-message {
+    padding: 20px;
+    background: #f5f8f6;
+    color: #68766e;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+/* ==========================================
+   プロフィール表示
+========================================== */
+
+.profile-card {
+    padding: 36px;
+}
+
+.profile-image-area {
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.profile-image {
+    width: 160px;
+    height: 160px;
+    border: 3px solid #e1ebe5;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-empty-image {
+    margin: 0;
+    padding: 24px;
+    background: #f5f8f6;
+    color: #68766e;
+    border-radius: 12px;
+}
+
+.profile-item {
+    padding: 22px 0;
+    border-top: 1px solid #e2e9e5;
+}
+
+.profile-label {
+    margin: 0 0 10px;
+    color: #0f5132;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.profile-value {
+    margin: 0;
+    color: #334039;
+    font-size: 17px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+.profile-empty {
+    color: #87928c;
+}
+
+.profile-actions {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.profile-actions .btn {
+    width: 100%;
+    min-height: 46px;
+}
+
+/* ==========================================
+   申込完了
+========================================== */
+
+.complete-heading {
+    max-width: 680px;
+    text-align: center;
+}
+
+.complete-card {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px;
+    text-align: center;
+}
+
+.complete-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dff3e7;
+    color: #176b3a;
+    border-radius: 50%;
+    font-size: 38px;
+    font-weight: bold;
+}
+
+.complete-message {
+    margin: 0;
+    color: #334039;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.complete-message strong {
+    color: #0f5132;
+}
+
+.complete-next-step {
+    margin-top: 30px;
+    padding: 24px;
+    background: #f3f8f5;
+    border: 1px solid #dfe9e3;
+    border-radius: 14px;
+}
+
+.complete-next-label {
+    margin: 0 0 8px;
+    color: #1f7a4d;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.complete-next-step h2 {
+    margin: 0 0 12px;
+    color: #0f5132;
+    font-size: 22px;
+}
+
+.complete-next-step p:last-child {
+    margin: 0;
+    color: #5d6b63;
+    line-height: 1.8;
+}
+
+.complete-actions {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.complete-actions .btn {
+    width: 100%;
+    min-height: 46px;
+}
+
+/* ==========================================
+   プロフィール編集
+========================================== */
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    display: block;
+    margin: 0;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+.profile-form-actions {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 14px;
+}
+
+.profile-form-actions .btn {
+    width: 100%;
+    min-height: 46px;
+}
+
+/* ==========================================
+   動画提出
+========================================== */
+
+.submission-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.submission-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.submission-form label {
+    font-weight: 600;
+    color: #333;
+}
+
+.submission-form textarea {
+    min-height: 140px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    resize: vertical;
+}
+
+.submission-form input[type="file"] {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.submission-form .form-hint {
+    font-size: 13px;
+    color: #777;
+}
+
+.submission-form .page-actions {
+    margin-top: 10px;
+}
+
+.submission-form .form-error,
+.form-error {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+    background: #fff5f5;
+    color: #c62828;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ==========================================
+   提出詳細
+========================================== */
+
+.submission-detail-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 36px;
+}
+
+.submission-detail-card h1 {
+    margin: 0 0 28px;
+    color: #0f5132;
+    font-size: 30px;
+}
+
+.submission-detail-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e9e5;
+}
+
+.submission-detail-section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.submission-detail-section h3 {
+    margin: 0 0 12px;
+    color: #0f5132;
+    font-size: 19px;
+}
+
+.submission-detail-comment {
+    padding: 16px;
+    background: #f3f8f5;
+    border: 1px solid #dfe9e3;
+    border-radius: 10px;
+    color: #36433b;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+.submission-detail-video {
+    width: 100%;
+    text-align: center;
+}
+
+.submission-detail-video video {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    max-height: 650px;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.submission-detail-actions {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* ==============================
+   レッスン作成画面
+============================== */
+
+.lesson-form-page {
+    width: min(100% - 32px, 820px);
+    margin: 0 auto;
+    padding: 48px 0 80px;
+}
+
+.lesson-form-heading {
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.lesson-form-heading .page-label {
+    margin-bottom: 8px;
+    color: #166b4f;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.lesson-form-heading h1 {
+    margin: 0 0 10px;
+    color: #18392f;
+    font-size: 32px;
+    line-height: 1.3;
+}
+
+.lesson-form-heading p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.lesson-form-card {
+    padding: 36px;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 12px 35px rgba(22, 107, 79, 0.08);
+}
+
+.lesson-form {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+
+.lesson-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 0;
+}
+
+.lesson-form label {
+    display: block;
+    margin: 0;
+    color: #203a32;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.lesson-form input[type="text"],
+
+.lesson-form input[type="file"],
+
+.lesson-form select,
+
+.lesson-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d7ddd9;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #1f2937;
+    font-family: inherit;
+    font-size: 15px;
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background-color 0.2s ease;
+}
+
+.lesson-form input[type="text"],
+
+.lesson-form select {
+    min-height: 48px;
+    padding: 0 15px;
+}
+
+.lesson-form textarea {
+    min-height: 135px;
+    padding: 14px 15px;
+    line-height: 1.7;
+    resize: vertical;
+}
+
+.lesson-form input[type="file"] {
+    min-height: 52px;
+    padding: 8px 10px;
+    background: #fafcfb;
+}
+
+.lesson-form input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 9px 16px;
+    border: 1px solid #b9cec5;
+    border-radius: 8px;
+    background: #eef7f3;
+    color: #166b4f;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lesson-form input[type="file"]::file-selector-button:hover {
+    background: #e3f1eb;
+}
+
+.lesson-form input[type="text"]:focus,
+
+.lesson-form input[type="file"]:focus,
+
+.lesson-form select:focus,
+
+.lesson-form textarea:focus {
+    outline: none;
+    border-color: #1f7a5c;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(31, 122, 92, 0.12);
+}
+
+.lesson-form input::placeholder,
+
+.lesson-form textarea::placeholder {
+    color: #9ca3af;
+}
+
+.lesson-form .form-help {
+    margin: -2px 0 0;
+    color: #7b837f;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.lesson-form .form-error {
+    margin: 0;
+    color: #c0392b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lesson-form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.lesson-form-actions .btn {
+    width: 100%;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.lesson-form-actions .btn-primary {
+    border: none;
+    background: #166b4f;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.lesson-form-actions .btn-primary:hover {
+    background: #115c43;
+}
+
+.lesson-form-actions .btn-secondary {
+    width: fit-content;
+    min-width: 180px;
+    margin: 0 auto;
+    border: 1px solid #9fb2aa;
+    background: #ffffff;
+    color: #36554a;
+}
+
+.lesson-form-actions .btn-secondary:hover {
+    background: #f3f8f6;
+}
+
+/* ==========================================
+   レスポンシブ
+========================================== */
+
+@media (max-width: 700px) {
+
+    main {
+        padding: 28px 18px;
+    }
+
+    .container {
+        padding: 0 20px;
+    }
+
+    .header-inner {
+        padding: 10px 18px;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .header-nav {
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .header-nav a {
+        padding: 7px 8px;
+        font-size: 13px;
+    }
+
+    .header-nav a:last-child {
+        margin-left: 0;
+    }
+
+    .page-title {
+        font-size: 32px;
+    }
+
+    .post-list {
+        grid-template-columns: 1fr;
+    }
+
+    .lesson-meta {
+        flex-direction: column;
+    }
+
+    .lesson-meta-item {
+        min-width: auto;
+    }
+
+    .lesson-image {
+        max-height: 300px;
+    }
+
+    .my-lessons-card {
+        padding: 18px;
+    }
+
+    .submission-status-section {
+        padding: 18px;
+    }
+
+    .submission-section-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .submission-section-heading > div {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .submission-card-top {
+        flex-direction: column;
+    }
+
+    .submission-info > div {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+    .profile-card {
+        padding: 24px 18px;
+    }
+
+    .profile-actions,
+    .profile-form-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .complete-card {
+        padding: 28px 18px;
+    }
+
+    .complete-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .submission-detail-card {
+        padding: 20px 16px;
+    }
+
+    .submission-detail-video video {
+        max-height: 500px;
+    }
+
+    .submission-detail-actions {
+        flex-direction: column;
+    }
+
+    .submission-detail-actions .btn {
+        width: 100%;
+    }
+
+    .lesson-form-page {
+        width: min(100% - 24px, 820px);
+        padding-top: 30px;
+    }
+
+    .lesson-form-card {
+        padding: 24px 18px;
+        border-radius: 16px;
+    }
+
+    .lesson-form-heading h1 {
+        font-size: 27px;
+    }
+
+    .lesson-form {
+        gap: 22px;
+    }
+
+    .lesson-form textarea {
+        min-height: 120px;
+    }
+
+    .reservation-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .reservation-status {
+        align-self: flex-start;
+    }
+
+    .reservation-info {
+        gap: 12px;
+    }
+
+    .submission-summary {
+        font-size: 14px;
+    }
+
 }

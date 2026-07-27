@@ -19,4 +19,7 @@ public interface LessonMapper {
     void deleteById(Long id);
 
     List<Lesson> findByCategory(String category);
+
+    List<Lesson> findByProId(Long proId);
+
 }
