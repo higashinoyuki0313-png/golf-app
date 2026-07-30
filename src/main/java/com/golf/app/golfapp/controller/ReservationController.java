@@ -41,11 +41,19 @@ public class ReservationController {
 
         reservationMapper.save(reservation);
 
-        return "redirect:/reservations";
+        return "redirect:/my-lessons";
     }
 
-    @GetMapping("/reservations")
-    public String index(
+    /**
+     * マイレッスン一覧。
+     *
+     * <p>ヘッダーのリンクや動画提出後のリダイレクト先が /my-lessons を指しているため、
+     * この URL で公開する。一覧にはレッスン名・担当プロ・提出状況を表示するので、
+     * それらを JOIN / 集計して返す findMyLessons を使う
+     * (findByUserId は予約の id と status しか返さず、画面の項目を埋められない)。
+     */
+    @GetMapping("/my-lessons")
+    public String myLessons(
             Model model,
             HttpSession session
     ) {
@@ -56,14 +64,24 @@ public class ReservationController {
             return "redirect:/login";
         }
 
+        if (loginAccount.getRole() != 1) {
+            return "redirect:/pro/home";
+        }
+
         model.addAttribute(
                 "reservations",
-                reservationMapper.findByUserId(loginAccount.getId())
+                reservationMapper.findMyLessons(loginAccount.getId())
         );
 
         model.addAttribute("loginAccount", loginAccount);
 
-        return "reservations/index";
+        return "reservations/my-lessons";
+    }
+
+    // 旧 URL。ブックマークや古いリンクから来た場合に 404 にせず現行の URL へ送る。
+    @GetMapping("/reservations")
+    public String index() {
+        return "redirect:/my-lessons";
     }
 
     @GetMapping("/reservations/{id}")
@@ -102,6 +120,6 @@ public class ReservationController {
 
         reservationMapper.updateStatus(id, status);
 
-        return "redirect:/reservations";
+        return "redirect:/my-lessons";
     }
 }

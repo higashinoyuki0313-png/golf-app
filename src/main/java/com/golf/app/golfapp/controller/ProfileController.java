@@ -121,10 +121,18 @@ public class ProfileController {
         }
 
         // ベストスコア
+        // input[type=number] でも桁数の大きい値や非数値を送信できるため、
+        // parseInt を素で呼ぶと NumberFormatException で 500 になる。
+        // 数値として解釈できない場合は入力エラーとして扱う。
         Integer bestScoreValue = null;
 
         if (bestScore != null && !bestScore.isBlank()) {
-            bestScoreValue = Integer.parseInt(bestScore);
+            try {
+                bestScoreValue = Integer.parseInt(bestScore.trim());
+            } catch (NumberFormatException e) {
+                return showError(model, account, loginAccount,
+                        "ベストスコアは0～200の数値で入力してください");
+            }
         }
 
         if (bestScoreValue != null &&

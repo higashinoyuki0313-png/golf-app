@@ -397,6 +397,12 @@ label {
     color: #555;
 }
 
+/* プロの提出一覧で「未対応」を示すバッジ。要対応なので目立つ色にする。 */
+.status-submitted {
+    background: #e3edfb;
+    color: #14498f;
+}
+
 .status-waiting {
     background: #fff0d6;
     color: #9a5700;

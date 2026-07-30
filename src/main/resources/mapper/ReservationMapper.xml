@@ -22,10 +22,13 @@
 
         SELECT
         reservations.*,
-        accounts.name AS user_name
+        accounts.name AS user_name,
+        lessons.title AS lesson_title
         FROM reservations
         JOIN accounts
         ON reservations.user_id = accounts.id
+        JOIN lessons
+        ON reservations.lesson_id = lessons.id
         WHERE reservations.id = #{id}
 
     </select>

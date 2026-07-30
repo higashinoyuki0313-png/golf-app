@@ -1,33 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>申込詳細</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-<h1>申込詳細</h1>
+<header th:replace="~{fragments/header :: header}"></header>
 
-<table border="1">
-  <tr>
-    <th>ID</th>
-    <td th:text="${reservation.id}"></td>
-  </tr>
+<main>
 
-  <tr>
-    <th>Lesson ID</th>
-    <td th:text="${reservation.lessonId}"></td>
-  </tr>
+  <section class="hero">
+    <p class="section-label">RESERVATION</p>
+    <h2>申込詳細</h2>
+  </section>
 
-  <tr>
-    <th>User ID</th>
-    <td th:text="${reservation.userId}"></td>
-  </tr>
-</table>
+  <div class="card">
 
-<br>
+    <table class="table">
+      <tr>
+        <th>レッスン名</th>
+        <td th:text="${reservation.lessonTitle}"></td>
+      </tr>
 
-<a href="/reservations">一覧へ戻る</a>
+      <tr>
+        <th>申込者</th>
+        <td th:text="${reservation.userName}"></td>
+      </tr>
+
+      <tr>
+        <th>申込状況</th>
+        <td>
+          <span th:if="${reservation.status == 1}">申込済み</span>
+          <span th:if="${reservation.status == 2}">承認済み</span>
+          <span th:if="${reservation.status == 3}">キャンセル</span>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div style="margin-top:30px;">
+    <a href="/my-lessons" class="btn btn-secondary">
+      ← マイレッスンへ戻る
+    </a>
+  </div>
+
+</main>
 
 </body>
 </html>

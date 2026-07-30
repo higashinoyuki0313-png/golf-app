@@ -7,22 +7,13 @@
 </head>
 <body>
 
-<header class="site-header">
-    <div>
-        <p class="logo-text">Golf Lesson App</p>
-        <h1>管理者ホーム</h1>
-        <p class="header-text">アカウント情報を管理できます。</p>
-    </div>
-
-    <nav class="nav-menu">
-        <a href="/logout" class="btn btn-danger logout-link">ログアウト</a>
-    </nav>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <main>
     <section class="hero">
         <p class="section-label">ADMIN MENU</p>
-        <h2>アカウント一覧</h2>
+        <h2>管理者ホーム</h2>
+        <p>アカウント情報を管理できます。</p>
     </section>
 
     <table class="table">
