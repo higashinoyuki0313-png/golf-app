@@ -123,9 +123,16 @@
                 </button>
             </form>
 
-            <a th:href="@{/lessons}"
+            <a th:if="${loginAccount != null and loginAccount.role == 1}"
+               th:href="@{/lessons}"
                class="btn btn-secondary">
-                ← 一覧へ戻る
+                ← レッスン一覧へ戻る
+            </a>
+
+            <a th:if="${loginAccount != null and loginAccount.role == 2}"
+               th:href="@{/pro/lessons}"
+               class="btn btn-secondary">
+                ← レッスン管理へ戻る
             </a>
 
         </div>

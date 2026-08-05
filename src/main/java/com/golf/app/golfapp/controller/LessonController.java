@@ -72,16 +72,20 @@ public class LessonController {
             Model model,
             HttpSession session
     ) {
+        Account loginAccount = getLoginAccount(session);
+
+        if(loginAccount == null) {
+            return "redirect:/login";
+        }
+
         Lesson lesson = lessonMapper.findById(id);
 
         if (lesson == null) {
+            if (isPro(loginAccount)) {
+                return "redirect:/pro/lessons";
+            }
+
             return "redirect:/lessons";
-        }
-
-        Account loginAccount = getLoginAccount(session);
-
-        if (loginAccount == null) {
-            return "redirect:/login";
         }
 
         Reservation myReservation = null;
