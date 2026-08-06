@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>レッスン一覧</title>
+  <title>レッスン管理</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -14,83 +14,91 @@
 <main>
 
   <section class="hero">
-    <p class="section-label">MY LESSONS</p>
+    <p class="section-label">LESSON MANAGEMENT</p>
 
-    <h2>自分が作成したレッスン</h2>
+    <h2>レッスン管理</h2>
 
     <p>
-      作成済みレッスンの確認・編集・削除ができます。
+      作成したレッスンの確認・編集・削除ができます。
     </p>
 
-    <a th:href="@{/lessons/new}" class="btn">
+    <a th:href="@{/lessons/new}"
+       class="btn btn-primary">
       ＋ 新しいレッスンを作成
     </a>
   </section>
 
-  <section class="cards">
+  <section class="cards pro-lesson-cards">
 
-    <div class="card" th:each="lesson : ${lessons}">
+    <div class="card"
+         th:each="lesson : ${lessons}">
 
-      <img
-              th:if="${lesson.image != null}"
-              th:src="${lesson.image}"
-              alt="レッスン画像"
-              class="lesson-image"
-      >
+      <img th:if="${lesson.image != null and lesson.image != ''}"
+           th:src="${lesson.image}"
+           alt="レッスン画像"
+           class="lesson-image">
 
-      <video
-              th:if="${lesson.video != null}"
-              controls
-              class="lesson-video"
-      >
+      <video th:if="${lesson.video != null and lesson.video != ''}"
+             controls
+             class="lesson-video">
         <source th:src="${lesson.video}">
+        動画を再生できません。
       </video>
 
-      <p
-              class="section-label"
-              th:text="${lesson.category}"
-      ></p>
+      <p class="section-label"
+         th:text="${lesson.category}">
+        カテゴリ
+      </p>
 
-      <h3 th:text="${lesson.title}"></h3>
+      <h3 th:text="${lesson.title}">
+        レッスンタイトル
+      </h3>
 
-      <p th:text="${lesson.content}"></p>
+      <p th:text="${lesson.content}">
+        レッスン内容
+      </p>
 
       <div class="lesson-actions">
 
-        <a
-                th:href="@{/lessons/{id}(id=${lesson.id})}"
-                class="btn"
-        >
-          詳細
+        <a th:href="@{/lessons/{id}(id=${lesson.id})}"
+           class="btn btn-secondary">
+          詳細を見る
         </a>
 
-        <a
-                th:href="@{/lessons/{id}/edit(id=${lesson.id})}"
-                class="btn"
-        >
+        <a th:href="@{/lessons/{id}/edit(id=${lesson.id})}"
+           class="btn btn-primary">
           編集する
         </a>
 
-        <form
-                th:action="@{/lessons/{id}/delete(id=${lesson.id})}"
-                method="post"
-                onsubmit="return confirm('このレッスンを削除しますか？');"
-        >
-          <button type="submit" class="btn btn-danger">
+        <form th:action="@{/lessons/{id}/delete(id=${lesson.id})}"
+              method="post"
+              onsubmit="return confirm('このレッスンを削除しますか？');">
+
+          <button type="submit"
+                  class="btn btn-danger">
             削除する
           </button>
+
         </form>
 
       </div>
 
     </div>
 
-    <div class="empty-message" th:if="${#lists.isEmpty(lessons)}">
-      <p>まだレッスンが作成されていません。</p>
+    <div class="empty-message"
+         th:if="${#lists.isEmpty(lessons)}">
 
-      <a th:href="@{/lessons/new}" class="btn">
+      <h2>まだレッスンがありません</h2>
+
+      <p>
+        最初のレッスンを作成してみましょう。
+      </p>
+
+      <a th:href="@{/lessons/new}"
+         class="btn btn-primary">
         最初のレッスンを作成する
       </a>
+
     </div>
 
   </section>

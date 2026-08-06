@@ -5,7 +5,8 @@
 
   <div class="header-inner">
 
-    <a href="/" class="logo">
+    <a class="logo"
+       th:href="@{${loginAccount == null ? '/' : (loginAccount.role == 1 ? '/user/home' : '/pro/home')}}">
       ⛳
     </a>
 
@@ -27,8 +28,8 @@
       </a>
 
       <a th:if="${loginAccount != null and loginAccount.role == 2}"
-         th:href="@{/lessons}">
-        レッスン一覧
+         th:href="@{/pro/lessons}">
+        レッスン管理
       </a>
 
       <a th:if="${loginAccount != null and loginAccount.role == 2}"
