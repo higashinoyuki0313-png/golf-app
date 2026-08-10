@@ -38,7 +38,15 @@
     <div class="card">
       <a th:href="@{/pro/lessons}">
         <h3>レッスン管理</h3>
-        <p>自分が作成したレッスンを確認・編集・削除を行います。</p>
+
+        <p>
+          自分が作成したレッスンを確認・編集・削除を行います。
+        </p>
+
+        <p class="section-label">
+          作成レッスン
+          <strong th:text="${lessonCount}">0</strong>件
+        </p>
       </a>
     </div>
 

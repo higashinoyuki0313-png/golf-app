@@ -22,4 +22,6 @@ public interface LessonMapper {
 
     List<Lesson> findByProId(Long proId);
 
+    int countByProId(long proId);
+
 }

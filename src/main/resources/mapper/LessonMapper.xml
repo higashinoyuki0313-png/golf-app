@@ -92,4 +92,12 @@
         ORDER BY lessons.id DESC
     </select>
 
+    <select id="countByProId"
+            parameterType="long"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM lessons
+        WHERE pro_id = #{proId}
+    </select>
+
 </mapper>
