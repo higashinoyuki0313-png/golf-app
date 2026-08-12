@@ -45,7 +45,8 @@
 
         <p class="section-label">
           作成レッスン
-          <strong th:text="${lessonCount}">0</strong>件
+          <strong class="lesson-count"
+                  th:text="${lessonCount}">0</strong>件
         </p>
       </a>
     </div>
@@ -53,7 +54,16 @@
     <div class="card">
       <a href="/submissions">
         <h3>提出一覧</h3>
-        <p>受講者から提出された動画を確認し、添削状況を管理します。</p>
+
+        <p>
+          受講者から提出された動画を確認し、添削状況を管理します。
+        </p>
+
+        <p class="section-label">
+          未対応提出
+          <strong class="pending-count"
+                  th:text="${pendingCount}">0</strong>件
+        </p>
       </a>
     </div>
 

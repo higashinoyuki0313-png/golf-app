@@ -23,4 +23,7 @@ public interface LessonSubmissionMapper {
     void updateFeedback(LessonSubmission lessonSubmission);
 
     void deleteById(Long id);
+
+    int countPendingByProId(Long id);
+
 }

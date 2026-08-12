@@ -153,4 +153,15 @@
 
     </delete>
 
+    <select id="countPendingByProId"
+            parameterType="long"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM lesson_submissions ls
+        JOIN lessons l
+        ON ls.lesson_id = l.id
+        WHERE l.pro_id = #{proId}
+        AND ls.status = 1
+    </select>
+
 </mapper>

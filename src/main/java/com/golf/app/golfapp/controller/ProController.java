@@ -1,6 +1,7 @@
 package com.golf.app.golfapp.controller;
 
 import com.golf.app.golfapp.mapper.LessonMapper;
+import com.golf.app.golfapp.mapper.LessonSubmissionMapper;
 import com.golf.app.golfapp.model.Account;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ProController {
 
     private final LessonMapper lessonMapper;
+    private final LessonSubmissionMapper lessonSubmissionMapper;
 
-    public ProController(LessonMapper lessonMapper) {
+    public ProController(
+            LessonMapper lessonMapper,
+            LessonSubmissionMapper lessonSubmissionMapper
+    ) {
         this.lessonMapper = lessonMapper;
+        this.lessonSubmissionMapper = lessonSubmissionMapper;
     }
 
     @GetMapping("/pro/home")
@@ -37,6 +43,11 @@ public class ProController {
 
         model.addAttribute("lessonCount", lessonCount);
         model.addAttribute("loginAccount", loginAccount);
+
+        int pendingCount =
+                lessonSubmissionMapper.countPendingByProId(loginAccount.getId());
+
+        model.addAttribute("pendingCount", pendingCount);
 
         return "pro/home";
     }
